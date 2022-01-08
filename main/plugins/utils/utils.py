@@ -137,7 +137,7 @@ def get_link(string):
 #Forcesub-----------------------------------------------------------------------------------
 
 async def force_sub(id):
-    FORCESUB = int(-1001485129059)
+    FORCESUB = config("FORCESUB", default=None)
     if not str(FORCESUB).startswith("-100"):
         FORCESUB = int("-100" + str(FORCESUB))
     ok = False
@@ -177,8 +177,8 @@ async def rem_thumbnail(event):
 #Heroku--------------------------------------------------------------------------------------------------------------
    
 async def heroku_restart():
-    HEROKU_API = "7a484218-cc55-4536-932d-aa13dc039171"
-    HEROKU_APP_NAME = "ignore-this-app-147369"
+    HEROKU_API = config("HEROKU_API", default=None)
+    HEROKU_APP_NAME = config("HEROKU_APP_NAME", default=None)
     x = None
     if not HEROKU_API and HEROKU_APP_NAME:
         x = None
