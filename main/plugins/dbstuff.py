@@ -7,9 +7,6 @@ from telethon import events
 from decouple import config
 from main.Database.database import Database
 
-def mention(name, id):
-    return f'[{name}](tg://user?id={id})'
-
 #Database command handling--------------------------------------------------------------------------
 
 db = Database(MONGODB_URI, 'uploaderpro')
