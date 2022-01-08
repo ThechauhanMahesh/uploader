@@ -22,6 +22,9 @@ from telethon.tl.functions.channels import GetParticipantRequest
 
 db = Database(MONGODB_URI, 'uploaderpro')
 
+def mention(name, id):
+    return f'[{name}](tg://user?id={id})'
+
 #uploading---------------------------------------------------------------------------------
 
 async def max_size_error(file, edit):
