@@ -37,6 +37,7 @@ async def bash(cmd):
     o = stdout.decode().strip()
     return o, e
 
+#Not in use
 async def screenshot(file):
     out = dt.now().isoformat("_", "seconds") + '.jpg'
     cmd = f'ffmpeg -i {file} -ss 00:00:00 -vframes 1 out -y'
@@ -48,6 +49,7 @@ async def screenshot(file):
         ss = out
     return ss
 
+#2gb limit
 async def max_size_error(file, edit):
     try:
         size = os.path.getsize(file)/1000000
@@ -57,7 +59,8 @@ async def max_size_error(file, edit):
             return
     except Exception:
         return await edit.edit("Internal Error, Your link may be unsupported.")
-    
+
+#to get the pmt thumbnail saved by the user
 async def thumb(id):
     db = Database(MONGODB_URI, 'uploaderpro')
     T = await db.get_thumb(id)
@@ -69,7 +72,8 @@ async def thumb(id):
         return path
     else:
         return None
-    
+
+#Not in use
 async def video_thumb(id, file):
     db = Database(MONGODB_URI, 'uploaderpro')
     T = await db.get_thumb(id)
@@ -165,7 +169,20 @@ async def upload_folder(folder, event, edit):
             return await edit.edit(f"An error `[{e}]` occured while uploading.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False)
         await edit.delete()
         folder.pop(i)
-       
+
+async def upload_as_file(file, event, edit):
+    try:
+        await max_size_error(file, edit) 
+        text = f'{file}\n\n**UPLOADED by:** {BOT_UN}'
+        T = await thumb(event.sender_id)
+        uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
+        await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
+        os.remove(file)
+    except Exception:
+        return await edit.edit(f"An error `[{e}]` occured while uploading.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False)
+    await edit.delete()
+        
+    
 #to get the url from event
 def get_link(string):
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
