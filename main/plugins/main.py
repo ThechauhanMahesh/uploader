@@ -32,7 +32,7 @@ async def u(event):
     elif 'playlist' in link:
         return
     elif 'herokuapp' in link:
-        return
+        return await event.reply("Support of this site is removed to reduce load because of it's slow download speed.")
     elif 'youtube' in link:
         await upload_button(event, 'yt') 
     elif 'youtu.be' in link:
@@ -43,6 +43,8 @@ async def u(event):
     elif 'mediafire' in link:
         if '.' in link:
             await upload_button(event, 'mf') 
+    elif 'tor' or 'torrent' or 'magnet' in link:
+        return await event.reply("No Torrent/mirror support!")
     else:
         await upload_button(event, 'upload') 
         
