@@ -7,6 +7,7 @@ import time
 import gdown
 import asyncio
 import mediafire_dl 
+from mega import Mega 
 from datetime import datetime as dt
 from .. import Drone, BOT_UN
 from telethon import events
@@ -25,7 +26,8 @@ def drive_folder_download(url):
 #makes error handling handy
 async def error(event, error, ps):
     return await event.edit(f"An error [`{error}`] occured while {ps}.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False)        
-    
+
+#download files frm drive
 async def drive(event, msg):
     folder = []
     Drone = event.client
@@ -90,11 +92,15 @@ async def drive(event, msg):
         return await edit.edit(f'Link support not added.\n\ncontact [SUPPORT]({SUPPORT_LINK})', link_preview=False)
     await ds.delete()
     await upload_folder(folder, event, edit) 
-    
+
+#download from mediafire
 def mfdl(url):
     output = url.split("/")[-1]
     mediafire_dl.download(url, output, quiet=False)
     return output
 
-
-
+#download mega files
+def mega_dl(url):
+    m = Mega().login()
+    file = m.download_url(url)
+    return file
