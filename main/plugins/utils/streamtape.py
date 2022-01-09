@@ -17,8 +17,7 @@ def upload(login, key, file_path):
     return upload_response 
     #status: 200 => Success
 
-""" response
-
+#response
 {'status': 200, 
  'msg': 'Upload finished!', 
  'result': {'url': 'https://streamtape.com/v/V0aVPA9gegIKV6g/x_%281%29.mp4', 
@@ -28,4 +27,4 @@ def upload(login, key, file_path):
             'content_type': 'video/mp4', 
             'id': 'V0aVPA9gegIKV6g'}}
             
-            """
+            
