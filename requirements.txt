@@ -17,11 +17,10 @@ telegraph
 Pillow>=5.3.0
 
 #heroku
-heroku3
+heroku3 #just for restart
 
 #uploading
-gdown
-mega.py
-
-#core
-ethon==1.2.7
+gdown #For gdrive 
+mega.py #for mega files
+ethon==1.2.7 #for weburl and ytdlp
+git+https://github.com/Juvenal-Yescas/mediafire-dl #for mediafire files
