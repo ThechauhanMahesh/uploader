@@ -7,7 +7,7 @@ import os
 
 #download mega files
 #return the name of files as list
-def mega_dl():
+def mega_dl(url):
     d = dt.now().isoformat("_", "seconds")
     xx = x()
     m = xx.login()
