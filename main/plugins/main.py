@@ -38,8 +38,9 @@ async def u(event):
         await upload_button(event, 'yt') 
     elif 'youtu.be' in link:
         await upload_button(event, 'yt') 
-    elif 'https://mega.nz/file/' in link:
-        await upload_button(event, 'mega') 
+    elif 'mega' in link:
+        if 'file' in link:
+            await upload_button(event, 'mega') 
     else:
         await upload_button(event, 'upload') 
         
