@@ -57,7 +57,7 @@ async def max_size_error(file, edit):
     except Exception:
         return await edit.edit("Internal Error, Your link may be unsupported.")
     
-async def thumb(id):
+async def thumb(id, file):
     db = Database(MONGODB_URI, 'uploaderpro')
     T = await db.get_thumb(id)
     if T is not None:
@@ -67,12 +67,15 @@ async def thumb(id):
         open(path , 'wb').write(r.content)
         return path
     else:
-        ss = await screenshot(file)
-        return ss
+        extension = file_extension(file)
+        if extension in video_mimes:
+            ss = await screenshot(file)
+        else:
+            ss = None
+    return ss
 
 video_mimes = ['.mp4']
                
-
 #attrubutes needed to upload video as streaming
 def attributes(file):
     metadata = video_metadata(file)
@@ -85,7 +88,7 @@ def attributes(file):
 #uploads video in streaming form
 async def upload_video(file, event, edit):
     await max_size_error(file, edit) 
-    T = await thumb(event.sender_id)
+    T = await thumb(event.sender_id, file) 
     text = f'{file}\n\n**UPLOADED by:** {BOT_UN}'
     Drone = event.client
     try:
@@ -97,8 +100,7 @@ async def upload_video(file, event, edit):
         False    
 
 async def upload_file(file, event, edit):
-    await max_size_error(file, edit) 
-    T = await thumb(event.sender_id)
+    await edit.edit('preparing to upload') 
     text = f'{file}\n\n**UPLOADED by:** {BOT_UN}'
     Drone = event.client
     try:
@@ -106,10 +108,14 @@ async def upload_file(file, event, edit):
         if extension in video_mimes:
             result = await upload_video(file, event, edit) 
             if result is False:
+                await max_size_error(file, edit) 
+                T = await thumb(event.sender_id, file) 
                 uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
                 await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
                 os.remove(file)
         else:
+            await max_size_error(file, edit) 
+            T = await thumb(event.sender_id, file) 
             uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
             await Drone.send_file(event.chat_id, uploader, caption=text,thumb=T, force_document=True)
             os.remove(file)
@@ -120,7 +126,7 @@ async def upload_file(file, event, edit):
 #uploads a folder 
 #Note:Here folder is a list of all contents in a folder
 async def upload_folder(folder, event, edit):
-    T = await thumb(event.sender_id)
+    await edit.edit('preparing to upload') 
     Drone = event.client
     index = len(folder)
     for i in range(int(index)):
@@ -132,10 +138,12 @@ async def upload_folder(folder, event, edit):
             if extension in video_mimes:
                 result = await upload_video(file, event, edit) 
                 if result is False:
+                    T = await thumb(event.sender_id, file)
                     uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
                     await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
                     os.remove(file)
             else:
+                T = await thumb(event.sender_id, file) 
                 uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
                 await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
                 os.remove(file)
