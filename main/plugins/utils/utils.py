@@ -170,15 +170,17 @@ async def upload_folder(folder, event, edit):
         await edit.delete()
         folder.pop(i)
 
+#to upload as document
 async def upload_as_file(file, event, edit):
     try:
+        Drone = event.client
         await max_size_error(file, edit) 
         text = f'{file}\n\n**UPLOADED by:** {BOT_UN}'
         T = await thumb(event.sender_id)
         uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
         await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
         os.remove(file)
-    except Exception as e:
+    except Exception:
         return await edit.edit(f"Could not upload.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False)
     await edit.delete()
         
