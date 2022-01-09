@@ -101,7 +101,7 @@ def attributes(file):
 #uploads video in streaming form
 async def upload_video(file, event, edit):
     await max_size_error(file, edit) 
-    T = await video_thumb(event.sender_id, file) 
+    T = await thumb(event.sender_id)
     text = f'{file}\n\n**UPLOADED by:** {BOT_UN}'
     Drone = event.client
     try:
