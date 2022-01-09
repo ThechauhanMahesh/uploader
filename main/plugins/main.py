@@ -9,7 +9,7 @@ from datetime import datetime
 from telethon import events, Button
 from main.plugins.drive import drive
 from ethon.uploader import weburl, ytdl, download_from_youtube
-from main.plugins.utils.utils import get_link, upload_file, force_sub
+from main.plugins.utils.utils import get_link, upload_file, force_sub, upload_as_file
 from main.plugins.mega import mega_dl
 from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
 
@@ -112,7 +112,7 @@ async def m(event):
         await ds.delete()
         return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await ds.delete()
-    await upload_file(file, event, edit) 
+    await upload_as_file(file, event, edit) 
     now = time.time()
     timer.append(f'{now}')
     process1.append(f'{event.sender_id}')
