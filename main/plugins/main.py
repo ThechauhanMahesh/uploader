@@ -42,7 +42,7 @@ async def u(event):
     elif 'mediafire' in link:
         await upload_button(event, 'mf') 
     elif 'torrent' or 'magnet' in link:
-        return await event.reply("No Torrent/mirror support!")
+        return await event.reply("No Torrent/magnet support!")
     else:
         await upload_button(event, 'upload') 
         
