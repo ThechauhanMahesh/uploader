@@ -38,11 +38,9 @@ async def u(event):
     elif 'youtu.be' in link:
         await upload_button(event, 'yt') 
     elif 'mega' in link:
-        if 'file' in link:
-            await upload_button(event, 'mega') 
+        await upload_button(event, 'mega') 
     elif 'mediafire' in link:
-        if '.' in link:
-            await upload_button(event, 'mf') 
+        await upload_button(event, 'mf') 
     elif 'tor' or 'torrent' or 'magnet' in link:
         return await event.reply("No Torrent/mirror support!")
     else:
