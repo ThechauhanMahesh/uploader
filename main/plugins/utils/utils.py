@@ -179,7 +179,7 @@ async def upload_as_file(file, event, edit):
         await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
         os.remove(file)
     except Exception as e:
-        return await edit.edit(f"An error `[{e}]` occured while uploading.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False)
+        return await edit.edit(f"Could not upload.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False)
     await edit.delete()
         
     
