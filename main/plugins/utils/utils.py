@@ -6,6 +6,7 @@ import os
 import time
 import heroku3
 import requests
+import subprocess
 from datetime import datetime as dt
 from ... import Drone, BOT_UN, MONGODB_URI
 from main.Database.database import Database
@@ -26,6 +27,25 @@ def mention(name, id):
     return f'[{name}](tg://user?id={id})'
 
 #uploading---------------------------------------------------------------------------------
+
+async def bash(cmd):
+    cmd_ = cmd.split()
+    process = await asyncio.create_subprocess_exec(*cmd_, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+    stdout, stderr = await process.communicate() 
+    e = stderr.decode().strip()
+    o = stdout.decode().strip()
+    return o, e
+
+async def screenshot(file):
+    out = (file).split(".")[0] + '.jpg'
+    cmd = (f'ffmpeg -i {file} -ss 00:00:00 -vframes 1 out -y').split()
+    o, e = await bash(cmd)
+    ss = None
+    if o is None:
+        ss = None
+    else:
+        ss = out
+    return ss
 
 async def max_size_error(file, edit):
     try:
