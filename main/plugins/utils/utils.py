@@ -37,8 +37,8 @@ async def bash(cmd):
     return o, e
 
 async def screenshot(file):
-    out = (file).split(".")[0] + '.jpg'
-    cmd = (f'ffmpeg -i {file} -ss 00:00:00 -vframes 1 out -y').split()
+    out = dt.now().isoformat("_", "seconds") + '.jpg'
+    cmd = f'ffmpeg -i {file} -ss 00:00:00 -vframes 1 out -y'
     o, e = await bash(cmd)
     ss = None
     if o is None:
@@ -57,7 +57,19 @@ async def max_size_error(file, edit):
     except Exception:
         return await edit.edit("Internal Error, Your link may be unsupported.")
     
-async def thumb(id, file):
+async def thumb(id):
+    db = Database(MONGODB_URI, 'uploaderpro')
+    T = await db.get_thumb(id)
+    if T is not None:
+        ext = T.split("/")[4]
+        r = requests.get(T, allow_redirects=True)
+        path = dt.now().isoformat("_", "seconds") + ext
+        open(path , 'wb').write(r.content)
+        return path
+    else:
+        return None
+    
+async def video_thumb(id, file):
     db = Database(MONGODB_URI, 'uploaderpro')
     T = await db.get_thumb(id)
     if T is not None:
@@ -88,7 +100,7 @@ def attributes(file):
 #uploads video in streaming form
 async def upload_video(file, event, edit):
     await max_size_error(file, edit) 
-    T = await thumb(event.sender_id, file) 
+    T = await video_thumb(event.sender_id, file) 
     text = f'{file}\n\n**UPLOADED by:** {BOT_UN}'
     Drone = event.client
     try:
@@ -109,13 +121,13 @@ async def upload_file(file, event, edit):
             result = await upload_video(file, event, edit) 
             if result is False:
                 await max_size_error(file, edit) 
-                T = await thumb(event.sender_id, file) 
+                T = await thumb(event.sender_id)
                 uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
                 await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
                 os.remove(file)
         else:
             await max_size_error(file, edit) 
-            T = await thumb(event.sender_id, file) 
+            T = await thumb(event.sender_id)
             uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
             await Drone.send_file(event.chat_id, uploader, caption=text,thumb=T, force_document=True)
             os.remove(file)
@@ -138,12 +150,12 @@ async def upload_folder(folder, event, edit):
             if extension in video_mimes:
                 result = await upload_video(file, event, edit) 
                 if result is False:
-                    T = await thumb(event.sender_id, file)
+                    T = await thumb(event.sender_id)
                     uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
                     await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
                     os.remove(file)
             else:
-                T = await thumb(event.sender_id, file) 
+                T = await thumb(event.sender_id)
                 uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
                 await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
                 os.remove(file)
