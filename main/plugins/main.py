@@ -10,6 +10,7 @@ from telethon import events, Button
 from main.plugins.drive import drive
 from ethon.uploader import weburl, ytdl, download_from_youtube
 from main.plugins.utils.utils import get_link, upload_file, force_sub
+from main.plugins.utils.mega import mega_dl
 from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
 
 
@@ -37,6 +38,8 @@ async def u(event):
         await upload_button(event, 'yt') 
     elif 'youtu.be' in link:
         await upload_button(event, 'yt') 
+    elif 'https://mega.nz/file/' in link:
+        await upload_button(event, 'mega') 
     else:
         await upload_button(event, 'upload') 
         
@@ -75,6 +78,35 @@ async def yt(event):
     try:
         link = get_link(msg.text)
         file = await download_from_youtube(link)
+    except Exception as e:
+        await ds.delete()
+        return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})")
+    await ds.delete()
+    await upload_file(file, event, edit) 
+    now = time.time()
+    timer.append(f'{now}')
+    process1.append(f'{event.sender_id}')
+    await event.client.send_message(event.chat_id, 'You can start a new process again after 2 minutes.')
+    await asyncio.sleep(120)
+    timer.pop(int(timer.index(f'{now}')))
+    process1.pop(int(process1.index(f'{event.sender_id}')))
+    
+@Drone.on(events.callbackquery.CallbackQuery(data="mega"))
+async def m(event):
+    if f'{event.sender_id}' in process1:
+        index = process1.index(f'{event.sender_id}')
+        last = timer[int(index)]
+        present = time.time()
+        return await event.answer(f"You have to wait {120-round(present-float(last))} seconds more to start a new process!", alert=True)
+    button = await event.get_message()
+    msg = await button.get_reply_message()
+    await event.delete()
+    ds = await Drone.send_message(event.chat_id, file=down_sticker, reply_to=msg.id)
+    edit = await Drone.send_message(event.chat_id, '**DOWNLOADING**', reply_to=msg.id)
+    file = None
+    try:
+        link = get_link(msg.text)
+        file = mega_dl(link)
     except Exception as e:
         await ds.delete()
         return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})")
