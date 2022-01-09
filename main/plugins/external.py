@@ -8,9 +8,9 @@ import gdown
 import asyncio
 import mediafire_dl 
 from mega import Mega 
-from datetime import datetime as dt
 from .. import Drone, BOT_UN
 from telethon import events
+from datetime import datetime as dt
 from ethon.telefunc import fast_upload
 from ethon.pyfunc import bash
 from LOCAL.localisation import SUPPORT_LINK, down_sticker
@@ -102,6 +102,7 @@ def mfdl(url):
 #download mega files
 def mega_dl(url):
     m = Mega().login()
-    m.download_url(url, f'./{dt.now().isoformat("_", "seconds")/')
-    file = (os.listdir(f'./{dt.now().isoformat("_", "seconds")/'))[0]
-    return file
+    path = f'./{dt.now().isoformat("_", "seconds")/'
+    m.download_url(url, path) 
+    file = (os.listdir(path))[0]
+    return str(path + '/' + file)
