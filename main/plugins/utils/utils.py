@@ -175,13 +175,11 @@ async def upload_as_file(file, event, edit):
     try:
         Drone = event.client
         await max_size_error(file, edit) 
-        name = dt.now().isoformat("_", "seconds") + "." + file.split(".")[-1]
-        os.rename(file, name) 
         text = f'{file}\n\n**UPLOADED by:** {BOT_UN}'
         T = await thumb(event.sender_id)
-        uploader = await fast_upload(name, name, time.time(), event.client, edit, f'**UPLOADING FILE:**')
+        uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
         await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
-        os.remove(name)
+        os.remove(file)
     except Exception as e:
         print(e)
         return await edit.edit(f"Could not upload.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False)
