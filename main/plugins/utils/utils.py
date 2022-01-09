@@ -47,7 +47,8 @@ async def thumb(id):
         open(path , 'wb').write(r.content)
         return path
     else:
-        return None
+        ss = await screenshot(file)
+        return ss
 
 video_mimes = ['.mp4']
                
