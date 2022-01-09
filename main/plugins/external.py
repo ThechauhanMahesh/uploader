@@ -6,6 +6,7 @@ import os
 import time
 import gdown
 import asyncio
+import mediafire_dl 
 from datetime import datetime as dt
 from .. import Drone, BOT_UN
 from telethon import events
@@ -90,3 +91,10 @@ async def drive(event, msg):
     await ds.delete()
     await upload_folder(folder, event, edit) 
     
+def mfdl(url):
+    output = url.split("/")[-1]
+    mediafire_dl.download(url, output, quiet=False)
+    return output
+
+
+
