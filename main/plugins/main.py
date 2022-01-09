@@ -7,7 +7,7 @@ import asyncio
 from .. import Drone
 from datetime import datetime
 from telethon import events, Button
-from main.plugins.drive import drive
+from main.plugins.external import drive
 from ethon.uploader import weburl, ytdl, download_from_youtube
 from main.plugins.utils.utils import get_link, upload_file, force_sub, upload_as_file
 from main.plugins.mega import mega_dl
