@@ -1,11 +1,11 @@
 {
-    "name": "VideoConvertor",
-    "description": "A stable and Fast telegram video convertor bot which can compress, convert(video into audio and other video formats), rename and trim.",
+    "name": "UploaderPro",
+    "description": "A stable and Fast telegram Uploader Bot",
     "logo": "",
     "keywords": [
         "Best",
         "telegram",
-        "compressor",
+        "uploader",
         "bot"
     ],
     "repository": "https://github.com/vasusen-code/VideoConvertor",
@@ -37,14 +37,6 @@
             "description": "Your heroku api, you can get it from heroku account settings(optional, add only if you want to restart directly from tg.",
             "value": "",
             "required": false
-        },
-        "LOG_CHANNEL": {
-            "description": "Log channel username, without using '@'.",
-            "value": ""
-        },
-        "LOG_ID": {
-            "description": "Log channel `ID` (Should be Public)",
-            "value": ""
         },
         "ACCESS_CHANNEL": {
             "description": "Private group id to spy users.(Should be public group)",
