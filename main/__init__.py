@@ -14,9 +14,10 @@ API_HASH = config("API_HASH", default=None)
 BOT_TOKEN = config("BOT_TOKEN", default=None)
 BOT_UN = config("BOT_UN", default=None)
 AUTH_USERS = config("AUTH_USERS", default=None, cast=int)
-FORCESUB = config("FORCESUB", default=None)
+FORCESUB = config("FORCESUB", default=None, cast=int)
 FORCESUB_UN = config("FORCESUB_UN", default=None)
 ACCESS_CHANNEL = config("ACCESS_CHANNEL", default=None)
 MONGODB_URI = config("MONGODB_URI", default=None)
-  
+ 
+#Connection
 Drone = TelegramClient('bot', API_ID, API_HASH).start(bot_token=BOT_TOKEN) 
