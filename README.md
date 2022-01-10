@@ -51,5 +51,5 @@ Add this buildpack if deploying manually:
 
 LICENSE:
 
-<p><a href="https://github.com/vasusen-code/UploaderPro/blob/main/LICENSE.txt"> <img src="https://img.shields.io/badge/LICENSE-red?style=for-the-badge&logo=gnu" width="250""/></a></p>
+<p><a href="https://github.com/vasusen-code/UploaderPro/blob/main/LICENSE.txt"> <img src="https://img.shields.io/badge/LICENSE-gold?style=for-the-badge&logo=drone" width="200""/></a></p>
 
