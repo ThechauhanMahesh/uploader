@@ -41,8 +41,8 @@ async def help(event):
 async def help(event):
     await event.edit('**🛠SETTINGS.**',
                     buttons=[[
-                         Button.inline("set THUMBNAIL.", data="sett"),
-                         Button.inline("rem THUMBNAIL.", data='remt')],
+                         Button.inline("set THUMBNAIL", data="sett"),
+                         Button.inline("rem THUMBNAIL", data='remt')],
                          [
                          Button.inline("restart", data="restart")],
                          [
