@@ -2,6 +2,7 @@
 import requests
 import hashlib
 
+#Not in use
 def upload(login, key, file_path):
     sha256_hash = hashlib.sha256()
     with open(file_path, "rb") as f:
