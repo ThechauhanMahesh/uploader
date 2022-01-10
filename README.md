@@ -6,7 +6,7 @@
 </h1>
 
 `Telegran Channel` - DroneBots
-<p><a href="https://t.me/DroneBots"> <img src="https://img.shields.io/badge/Telegram-Join%20Channel-silver?style=for-the-badge&logo=telegram" width="220""/></a></p>
+<p><a href="https://t.me/DroneBots"> <img src="https://img.shields.io/badge/Telegram-Join%20Channel-red?style=for-the-badge&logo=telegram" width="220""/></a></p>
 
 Variables required are:
 * `API_ID`
@@ -51,5 +51,5 @@ Add this buildpack if deploying manually:
 
 LICENSE:
 
-[![License](https://www.gnu.org/graphics/gplv3-127x51.png)](LICENSE)
+<p><a href="https://www.gnu.org/graphics/gplv3"> <img src="https://img.shields.io/badge/LICENSE-silver?style=for-the-badge&logo=gnu" width="250""/></a></p>
 
