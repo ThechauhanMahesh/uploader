@@ -51,5 +51,5 @@ Add this buildpack if deploying manually:
 
 LICENSE:
 
-<p><a href="https://www.gnu.org/graphics/gplv3"> <img src="https://img.shields.io/badge/LICENSE-silver?style=for-the-badge&logo=gnu" width="250""/></a></p>
+<p><a href="https://www.gnu.org/graphics/gplv3"> <img src="https://img.shields.io/badge/LICENSE-red?style=for-the-badge&logo=license" width="250""/></a></p>
 
