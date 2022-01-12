@@ -100,14 +100,14 @@ async def check_progress_for_dl(gid, event, edit, previous):
                     previous = msg
             else:
                 await upload_file(file, event, edit) 
-            await sleep(Config.EDIT_SLEEP_TIMEOUT)
+            await sleep(10)
             await check_progress_for_dl(gid, message, previous, tg_upload)
         except Exception as e:
             if "not found" in str(e) or "'file'" in str(e):
-                if "Your Torrent/Link is Dead." not in message.text:
-                    await message.edit(f"**DOWNLOAD CANCELLED :**\n{t_file.name}")
+                if "Your Torrent/Link is Dead." not in edit.text:
+                    await edit.edit(f"**DOWNLOAD CANCELLED :** {t_file.name}")
             elif "depth exceeded" in str(e):
                 t_file.remove(force=True)
-                await message.edit(
-                    f"**DOWNLOAD AUTO-CANCELLED :**\n{t_file.name}\nYour Torrent/Link is Dead."
+                await edit.edit(
+                    f"**DOWNLOAD AUTO-CANCELLED :** {t_file.name}\nYour Torrent/Link is Dead."
                 )
