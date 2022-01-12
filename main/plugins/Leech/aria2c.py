@@ -59,7 +59,7 @@ async def check_metadata(gid):
     new_gid = t_file.followed_by_ids[0]
     return new_gid
 
-async def check_progress_for_dl(gid, edit, previous, tg_upload):  # sourcery no-metrics
+async def check_progress_for_dl(gid, edit, previous, event): 
     complete = False
     while not complete:
         try:
@@ -99,25 +99,15 @@ async def check_progress_for_dl(gid, edit, previous, tg_upload):  # sourcery no-
                     await edit.edit(msg)
                     previous = msg
             else:
-                if complete and not t_file.name.lower().startswith("[metadata]"):
-                    if tg_upload:
-                        return await upload(message, Path(t_file.name))
-                    else:
-                        return await message.edit(
-                                     f"**Name :** `{t_file.name}`\n"
-                                     f"**Size :** `{t_file.total_length_string()}`\n"
-                                     f"**Path :** `{t_file.name}`\n"
-                                     "**Response :** __Successfully downloaded...__"
-                                    )
-                await message.edit(f"`{msg}`")
+                await upload_file(file, event, edit) 
             await sleep(Config.EDIT_SLEEP_TIMEOUT)
             await check_progress_for_dl(gid, message, previous, tg_upload)
         except Exception as e:
             if "not found" in str(e) or "'file'" in str(e):
                 if "Your Torrent/Link is Dead." not in message.text:
-                    await message.edit(f"**Download Canceled :**\n`{t_file.name}`")
+                    await message.edit(f"**DOWNLOAD CANCELLED :**\n{t_file.name}")
             elif "depth exceeded" in str(e):
                 t_file.remove(force=True)
                 await message.edit(
-                    f"**Download Auto Canceled :**\n`{t_file.name}`\nYour Torrent/Link is Dead."
+                    f"**DOWNLOAD AUTO-CANCELLED :**\n{t_file.name}\nYour Torrent/Link is Dead."
                 )
