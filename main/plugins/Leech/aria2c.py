@@ -10,6 +10,7 @@ from requests import get
 from ethon.pyfunc import bash
 from main.plugins.utils.utils import upload_file
 
+#Maybe this save from suspension of heroku acc
 def install_aria2p():
     if not os.isdir('aria'):
         os.mkdir('aria') 
@@ -17,6 +18,7 @@ def install_aria2p():
     else:
         pass
 install_aria2p()
+import aria2p
 
 def subprocess_run(cmd):
     subproc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True)
