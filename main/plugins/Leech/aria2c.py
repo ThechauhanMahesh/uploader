@@ -101,7 +101,7 @@ async def check_progress_for_dl(gid, event, edit, previous):
             else:
                 await upload_file(file, event, edit) 
             await sleep(10)
-            await check_progress_for_dl(gid, message, previous, tg_upload)
+            await check_progress_for_dl(gid, event, edit, previous)
         except Exception as e:
             if "not found" in str(e) or "'file'" in str(e):
                 if "Your Torrent/Link is Dead." not in edit.text:
