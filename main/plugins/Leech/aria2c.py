@@ -59,7 +59,7 @@ async def check_metadata(gid):
     new_gid = t_file.followed_by_ids[0]
     return new_gid
 
-async def check_progress_for_dl(gid, edit, previous, event): 
+async def check_progress_for_dl(gid, event, edit, previous): 
     complete = False
     while not complete:
         try:
