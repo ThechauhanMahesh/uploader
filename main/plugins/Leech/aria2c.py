@@ -100,7 +100,7 @@ async def check_progress_for_dl(gid, event, edit, previous):
                     await edit.edit(msg)
                     previous = msg
             else:
-                await upload_file(file, event, edit) 
+                await upload_file(t_file.name, event, edit) 
             await sleep(10)
             await check_progress_for_dl(gid, event, edit, previous)
         except Exception as e:
