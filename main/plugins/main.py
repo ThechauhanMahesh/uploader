@@ -30,7 +30,9 @@ async def u(event):
     yy = await force_sub(event.sender_id)
     if yy is True:
         return await event.reply(forcesubtext)
-    if 'drive.google.com' in link: 
+    if 'magnet:' in event.text:
+        await upload_button(event, 'magnet')
+    elif 'drive.google.com' in link: 
         await upload_button(event, 'drive') 
     elif 'playlist' in link:
         return
@@ -43,9 +45,7 @@ async def u(event):
     elif 'mega' in link:
         await upload_button(event, 'mega') 
     elif 'mediafire' in link:
-        await upload_button(event, 'mf') 
-    elif 'magnet:' in link:
-        await upload_button(event, 'magnet') 
+        await upload_button(event, 'mf')
     else:
         await upload_button(event, 'upload') 
         
