@@ -16,6 +16,9 @@ def install_aria2p():
     if not os.isdir('aria'):
         os.mkdir('aria') 
         bash('pip install aria2p')
+        print('installed aria2p.')
+        bash('apt install aria2c')
+        print('installed aria2c.')
     else:
         pass
 
