@@ -25,12 +25,12 @@ async def upload_button(event, data):
 @Drone.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def u(event):
     link = get_link(event.text)
+    if not link:
+        return 
     yy = await force_sub(event.sender_id)
     if yy is True:
         return await event.reply(forcesubtext)
-    if 'magnet' == (event.text).split(":")[0]:
-        await upload_button(event, 'magnet')
-    elif 'drive.google.com' in link: 
+    if 'drive.google.com' in link: 
         await upload_button(event, 'drive') 
     elif 'playlist' in link:
         return
@@ -45,10 +45,7 @@ async def u(event):
     elif 'mediafire' in link:
         await upload_button(event, 'mf')
     else:
-        if link:
-            await upload_button(event, 'upload')
-        else:
-            return
+        await upload_button(event, 'upload')
         
 @Drone.on(events.callbackquery.CallbackQuery(data="drive"))
 async def d(event):
