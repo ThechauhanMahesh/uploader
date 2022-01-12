@@ -9,6 +9,7 @@ from subprocess import PIPE, Popen
 from requests import get
 from ethon.pyfunc import bash
 from main.plugins.utils.utils import upload_file
+from telethon import events
 
 #Maybe this save from suspension of heroku acc
 def install_aria2p():
