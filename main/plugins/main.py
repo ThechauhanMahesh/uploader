@@ -45,7 +45,10 @@ async def u(event):
     elif 'mediafire' in link:
         await upload_button(event, 'mf')
     else:
-        await upload_button(event, 'upload') 
+        if link:
+            await upload_button(event, 'upload')
+        else:
+            return
         
 @Drone.on(events.callbackquery.CallbackQuery(data="drive"))
 async def d(event):
