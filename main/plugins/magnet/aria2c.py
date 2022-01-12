@@ -13,7 +13,7 @@ from telethon import events
 
 #Maybe this save from suspension of heroku acc
 def install_aria2p():
-    if not os.isdir('aria'):
+    if not os.path.isdir('aria'):
         os.mkdir('aria') 
         bash('pip install aria2p')
         print('installed aria2p.')
