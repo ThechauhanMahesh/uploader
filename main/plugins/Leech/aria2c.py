@@ -16,6 +16,7 @@ from subprocess import PIPE, Popen
 from requests import get
 from ethon.pyfunc import bash
 from main.plugins.utils.utils import upload_file
+install_aria2p()
 
 def subprocess_run(cmd):
     subproc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True)
@@ -52,7 +53,9 @@ def aria_start():
         aria2p.Client(host="http://localhost", port=6800, secret="")
     )
     return aria2
-    
+
+aria2p_client = aria_start()
+
 async def check_metadata(gid):
     t_file = aria2p_client.get_download(gid)
     if not t_file.followed_by_ids:
