@@ -1,13 +1,6 @@
 #Tg:ChauhanMahesh/DroneBots
 #Github.com/Vasusen-code
 
-def install_aria2p():
-    if not os.isdir('aria'):
-        os.mkdir('aria') 
-        bash('pip install aria2p')
-    else:
-        pass
-      
 from asyncio import sleep
 import math
 import os
@@ -16,6 +9,13 @@ from subprocess import PIPE, Popen
 from requests import get
 from ethon.pyfunc import bash
 from main.plugins.utils.utils import upload_file
+
+def install_aria2p():
+    if not os.isdir('aria'):
+        os.mkdir('aria') 
+        bash('pip install aria2p')
+    else:
+        pass
 install_aria2p()
 
 def subprocess_run(cmd):
@@ -53,7 +53,6 @@ def aria_start():
         aria2p.Client(host="http://localhost", port=6800, secret="")
     )
     return aria2
-
 aria2p_client = aria_start()
 
 async def check_metadata(gid):
