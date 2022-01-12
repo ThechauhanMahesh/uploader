@@ -16,7 +16,7 @@ import aria2p
 def install_aria2c():
     if not os.path.isdir('aria'):
         os.mkdir('aria') 
-        bash('apt install aria2')
+        bash('apt-get install aria2')
         print('installed aria2c.')
     else:
         pass
