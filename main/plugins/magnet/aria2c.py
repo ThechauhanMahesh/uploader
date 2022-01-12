@@ -19,6 +19,18 @@ def install_aria2p():
     else:
         pass
 
+def humanbytes(size: float) -> str:
+    """ humanize size """
+    if not size:
+        return ""
+    power = 1024
+    t_n = 0
+    power_dict = {0: ' ', 1: 'Ki', 2: 'Mi', 3: 'Gi', 4: 'Ti'}
+    while size > power:
+        size /= power
+        t_n += 1
+    return "{:.2f} {}B".format(size, power_dict[t_n])
+   
 def subprocess_run(cmd):
     subproc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True)
     talk = subproc.communicate()
