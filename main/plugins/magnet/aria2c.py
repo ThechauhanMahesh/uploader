@@ -10,13 +10,12 @@ from requests import get
 from ethon.pyfunc import bash
 from main.plugins.utils.utils import upload_file
 from telethon import events
+import aria2p
 
 #Maybe this save from suspension of heroku acc
-def install_aria2p():
+def install_aria2c():
     if not os.path.isdir('aria'):
         os.mkdir('aria') 
-        bash('pip install aria2p')
-        print('installed aria2p.')
         bash('apt install aria2c')
         print('installed aria2c.')
     else:
@@ -41,9 +40,6 @@ def subprocess_run(cmd):
     if exitCode != 0:
         return
     return talk
-
-install_aria2p()
-import aria2p
 
 def aria_start():
     trackers_list = get(
