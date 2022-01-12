@@ -15,6 +15,7 @@ from pathlib import Path
 from subprocess import PIPE, Popen
 from requests import get
 from ethon.pyfunc import bash
+from main.plugins.utils.utils import upload_file
 
 def subprocess_run(cmd):
     subproc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True)
