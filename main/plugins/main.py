@@ -198,10 +198,10 @@ async def u(event):
     process1.pop(int(process1.index(f'{event.sender_id}')))
 
         
-@Drone.on(events.callbackquery.CallbackQuery(data="magnet"))
+@Drone.on(events.NewMessage(incoming=True, pattern="/magnet"))
 async def magnet(event):
     button = await event.get_message()
-    msg = await button.get_reply_message()  
+    msg = await event.get_reply_message() 
     edit = await event.client.send_message(event.chat_id, "Trying to process.", reply_to=msg.id)
     download = None
     try:
