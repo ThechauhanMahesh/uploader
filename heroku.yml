@@ -1,5 +1,5 @@
 build:
   docker:
-    Drone: Dockerfile
+    drone: Dockerfile
 run:
-  Drone: bash start.sh
+  drone: bash start.sh
