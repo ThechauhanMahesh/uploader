@@ -8,9 +8,8 @@ cryptg
 
 #database
 motor
-pymongo[srv]
+pymongo >=3.12,<4
 dnspython
-git+https://github.com/mongodb/mongo-python-driver
 
 #thumbnail
 telegraph
