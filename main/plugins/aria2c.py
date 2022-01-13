@@ -17,7 +17,7 @@ def install_aria2c():
     if not os.path.isdir('aria'):
         os.mkdir('aria') 
         bash('apt update') 
-        bash('apt-get install aria2')
+        bash('apt install aria2')
         print('installed aria2c.')
     else:
         pass
@@ -42,6 +42,7 @@ def subprocess_run(cmd):
         return
     return talk
 
+install_aria2c()
 def aria_start():
     trackers_list = get(
     "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
