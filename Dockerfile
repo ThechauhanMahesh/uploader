@@ -1,4 +1,4 @@
-FROM python:3.9.6-slim-buster
+FROM python:3.9
 WORKDIR /app
 RUN apt -qq update --fix-missing && \
     apt -qq install -y git \
