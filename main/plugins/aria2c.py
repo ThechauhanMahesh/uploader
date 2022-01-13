@@ -48,7 +48,7 @@ async def aria_start():
            "--follow-torrent=mem",
            "--seed-time=1",
            "--seed-ratio=0.01",
-           "--max-upload-limit=2M",
+           "--max-overall-upload-limit=2M",
            "--max-concurrent-downloads=2",
            "--min-split-size=10M",
            "--follow-torrent=mem",
