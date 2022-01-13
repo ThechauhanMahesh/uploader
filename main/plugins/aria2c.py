@@ -16,7 +16,7 @@ import aria2p
 def install_aria2c():
     if not os.path.isdir('aria'):
         os.mkdir('aria') 
-        os.mkdir('/var/cache/apt/archives/partial')
+        bash('mkdir -p /var/cache/apt/archives/partial && apt-get autoclean')
         bash('apt -qq update') 
         bash('apt -qq install -y git')
         bash('git clone https://github.com/aria2/aria2.git')
