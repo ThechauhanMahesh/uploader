@@ -11,8 +11,10 @@ RUN apt -qq update --fix-missing && \
     apt -qq install -y git \
     aria2 \
     python3-pip 
+    
      
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip install pymongo
 COPY . .
 CMD ["bash","start.sh"]
