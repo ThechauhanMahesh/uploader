@@ -17,7 +17,9 @@ def install_aria2c():
     if not os.path.isdir('aria'):
         os.mkdir('aria') 
         bash('apt -qq update') 
-        bash('apt-get autoclean')
+        bash('mkdir -p /var/lib/dpkg/')
+        bash('touch -p /var/lib/dpkg/lock')
+        bash('chmod -p /var/lib/dpkg/lock')
         bash('mkdir -p /var/cache/apt/archives/partial')
         bash('touch /var/cache/apt/archives/lock')
         bash('chmod 640 /var/cache/apt/archives/lock')
