@@ -9,7 +9,7 @@ from datetime import datetime
 from telethon import events, Button
 from main.plugins.external import drive, mfdl, mega_dl
 from ethon.uploader import weburl, ytdl, download_from_youtube
-from main.plugins.magnet.aria2c import install_aria2c, aria_start, check_progress_for_dl
+from main.plugins.aria2c import install_aria2c, aria_start, check_progress_for_dl
 from main.plugins.utils.utils import get_link, upload_file, force_sub, upload_as_file
 from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
 
