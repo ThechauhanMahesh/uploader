@@ -4,6 +4,9 @@ RUN mkdir ./app
 RUN chmod 777 ./app
 WORKDIR /app
 
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Kolkata
+
 RUN apt -qq update --fix-missing && \
     apt -qq install -y git \
     aria2 \
@@ -11,4 +14,6 @@ RUN apt -qq update --fix-missing && \
      
 COPY requirements.txt .
 RUN pip3 install --no-cache-dir -r requirements.txt
+COPY . .
+RUN chmod +x extract
 CMD ["bash","start.sh"]
