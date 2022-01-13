@@ -1,9 +1,8 @@
-FROM ubuntu:20.04
-WORKDIR /app
-
+FROM python:3.9.6-slim-buster
 ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Kolkata
 
+WORKDIR /app
 RUN apt -qq update --fix-missing && \
     apt -qq install -y git \
     aria2 \
