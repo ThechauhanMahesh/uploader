@@ -16,7 +16,9 @@ import aria2p
 def install_aria2c():
     if not os.path.isdir('aria'):
         os.mkdir('aria') 
-        bash('mkdir ./app && chmod 777 ./app && apt -qq update --fix-missing && apt -qq install -y aria2')
+        bash('mkdir ./app')
+        bash('chmod 777 ./app')
+        bash('cd /app && apt -qq update --fix-missing && apt -qq install -y aria2')
         print('installed aria2')
     else:
         pass
