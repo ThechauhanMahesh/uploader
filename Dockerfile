@@ -5,9 +5,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 ENV TZ=Asia/Kolkata
 WORKDIR /app
 RUN apt -qq update --fix-missing
-RUN apt -qq install -y aria2 \
+RUN apt -qq install -y git \
+    aria2 \
     python3 \
     python3-pip
 COPY . .
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
 CMD ["bash","start.sh"]
