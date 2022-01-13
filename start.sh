@@ -1,1 +1,1 @@
-python3 -m main
+python -m main
