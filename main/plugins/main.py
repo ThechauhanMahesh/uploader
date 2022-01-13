@@ -205,7 +205,7 @@ async def magnet(event):
     except Exception as e:
         return await edit.edit(str(e))
     gid = download.gid
-    await check_progress_for_dl(gid, event, edit, "")
+    await check_progress_for_dl(gid, event, edit, None)
     
     
     
