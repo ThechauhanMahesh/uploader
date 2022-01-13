@@ -1,8 +1,8 @@
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=Asia/Kolkata
 FROM ubuntu:20.04
 RUN mkdir ./app
 RUN chmod 777 ./app
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Asia/Kolkata
 WORKDIR /app
 RUN apt -qq update --fix-missing
 RUN apt -qq install -y aria2 \
