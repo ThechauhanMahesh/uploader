@@ -17,7 +17,8 @@ def install_aria2c():
     if not os.path.isdir('aria'):
         os.mkdir('aria') 
         bash('apt -qq update') 
-        bash('apt -qq install -y aria2')
+        bash('apt -qq install -y git')
+        bash('git clone https://github.com/aria2/aria2.git')
         print('installed aria2')
     else:
         pass
