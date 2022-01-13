@@ -7,7 +7,6 @@ WORKDIR /app
 RUN apt -qq update --fix-missing && \
     apt -qq install -y git \
     aria2 \
-    wget \
     python3-pip 
      
 COPY requirements.txt .
