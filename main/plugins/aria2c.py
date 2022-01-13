@@ -85,7 +85,7 @@ async def check_progress_for_dl(gid, event, edit, previous):
                     return await edit.edit("Download cancelled!\n\nstatus- **FAILED**")
                 percentage = int(t_file.progress)
                 downloaded = percentage * int(t_file.total_length) / 100
-                prog_str = "**DOWNLOADING FILE:**\n[{0}{1}]".format(
+                prog_str = "**DOWNLOADING FILE:**\n\n**[{0}] |** `{1}`".format(
                     "".join(
                         "█"
                         for i in range(math.floor(percentage / 10))
