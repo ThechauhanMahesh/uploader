@@ -12,17 +12,6 @@ from main.plugins.utils.utils import upload_file
 from telethon import events
 import aria2p
 
-#Maybe this save from suspension of heroku acc
-def install_aria2c():
-    if not os.path.isdir('aria'):
-        os.mkdir('aria') 
-        bash('chmod 777 ./')
-        bash('apt -qq update --fix-missing')
-        bash('apt -qq install -y aria2')
-        print('installed aria2')
-    else:
-        pass
-
 def humanbytes(size: float) -> str:
     """ humanize size """
     if not size:
@@ -43,7 +32,6 @@ def subprocess_run(cmd):
         return
     return talk
 
-install_aria2c()
 def aria_start():
     trackers_list = get(
     "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
