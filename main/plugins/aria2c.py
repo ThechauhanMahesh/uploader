@@ -91,24 +91,19 @@ async def check_progress_for_dl(gid, event, edit, previous):
                     ),
                     t_file.progress_string(),
                 )
-                if is_file is None :
-                   info_msg = f"**CONNECTIONS**: {t_file.connections}\n"
-                else :
-                   info_msg = f"**INFO.**: [ P : {t_file.connections} || S : {t_file.num_seeders} ]\n"
                 msg = (
                     f"{prog_str}\n"
                     f"GROSS: {humanbytes(downloaded)} ~ {t_file.total_length_string()}\n\n"
                     f"SPEED: {t_file.download_speed_string()}\n\n"
                     f"ETA: {t_file.eta_string()}\n\n"
-                    f"NAME: {t_file.name}\n"
-                    f"INFO: {info_msg}\n"
-                    f"GID: {gid}\n"
+                    f"NAME: `{t_file.name}`"
                 )
                 if msg != previous:
                     await edit.edit(msg)
                     previous = msg
             else:
-                await upload_file(t_file.name, event, edit) 
+                if complete and not t_file.name.lower().startswith("[metadata]"):
+                    await upload_file(Path(t_file.name), event, edit) 
         except Exception as e:
             if "not found" in str(e) or "'file'" in str(e):
                 if "Your Torrent/Link is Dead." not in edit.text:
