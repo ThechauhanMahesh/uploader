@@ -10,6 +10,7 @@ cryptg
 motor
 pymongo[srv]
 dnspython
+git+https://github.com/mongodb/mongo-python-driver
 
 #thumbnail
 telegraph
@@ -24,4 +25,3 @@ mega.py #for mega files
 ethon==1.2.7 #for weburl and ytdlp
 git+https://github.com/Juvenal-Yescas/mediafire-dl #for mediafire files
 aria2p #magnet
-git+https://github.com/mongodb/mongo-python-driver
