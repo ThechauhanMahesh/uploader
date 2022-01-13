@@ -16,13 +16,7 @@ import aria2p
 def install_aria2c():
     if not os.path.isdir('aria'):
         os.mkdir('aria') 
-        bash('dpkg --configure -a')
-        bash('apt -qq update') 
-        bash('mkdir -p /var/cache/apt/archives/partial')
-        bash('touch /var/cache/apt/archives/lock')
-        bash('chmod 640 /var/cache/apt/archives/lock')
-        bash('apt -qq install -y git')
-        bash('git clone https://github.com/aria2/aria2.git')
+        bash('mkdir ./app && chmod 777 ./app && apt -qq update --fix-missing && apt -qq install -y aria2')
         print('installed aria2')
     else:
         pass
