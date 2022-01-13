@@ -200,7 +200,6 @@ async def u(event):
         
 @Drone.on(events.NewMessage(incoming=True, pattern="/magnet"))
 async def magnet(event):
-    button = await event.get_message()
     msg = await event.get_reply_message() 
     edit = await event.client.send_message(event.chat_id, "Trying to process.", reply_to=msg.id)
     download = None
