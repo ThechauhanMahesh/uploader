@@ -69,8 +69,7 @@ async def check_metadata(gid):
     return new_gid
 
 async def check_progress_for_dl(gid, event, edit, previous): 
-    complete = False
-    while not complete:
+     while True:
         try:
             t_file = aria2p_client.get_download(gid)
         except:
@@ -102,7 +101,7 @@ async def check_progress_for_dl(gid, event, edit, previous):
                     await edit.edit(msg)
                     previous = msg
             else:
-                if complete and not t_file.name.lower().startswith("[metadata]"):
+                if complete:
                     await upload_file(Path(t_file.name), event, edit) 
         except Exception as e:
             if "not found" in str(e) or "'file'" in str(e):
