@@ -1,7 +1,7 @@
 #tg:ChauhanMahesh/DroneBots
 #github.com/vasusen-code
 
-import aria2p, os, math
+import aria2p, os, math, subprocess
 from pathlib import Path
 from requests import get
 from asyncio import sleep
