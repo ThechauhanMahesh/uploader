@@ -33,8 +33,8 @@ def humanbytes(size: float) -> str:
         size /= power
         t_n += 1
     return "{:.2f} {}B".format(size, power_dict[t_n])
-   
-async def aria_start():
+
+def aria_start():
     trackers_list = get(
     "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
 ).text.replace("\n\n", ",")
