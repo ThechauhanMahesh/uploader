@@ -4,9 +4,7 @@ from pathlib import Path
 from requests import get
 from asyncio import sleep
 from subprocess import PIPE, Popen
-from telethon.tl.types import KeyboardButtonCallback
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
-from functools import partial
 from main.plugins.utils.utils import upload_file
 
 def subprocess_run(cmd):
