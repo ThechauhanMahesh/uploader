@@ -77,7 +77,7 @@ async def check_metadata(gid):
 
 async def check_progress_for_dl(gid, event, edit, previous): 
     complete = False
-    while not complete::
+    while not complete:
         try:
             t_file = aria2p_client.get_download(gid)
         except:
