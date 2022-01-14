@@ -28,7 +28,7 @@ def humanbytes(size: float) -> str:
         t_n += 1
     return "{:.2f} {}B".format(size, power_dict[t_n])
 
-def aria2_start():
+def aria_start():
     trackers = []
     trackers.append(get("https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt").text.replace("\n\n", ","))      
     cmd = f"aria2c \
