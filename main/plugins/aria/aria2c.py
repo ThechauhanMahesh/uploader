@@ -1,5 +1,7 @@
+#tg:ChauhanMahesh/DroneBots
+#github.com/vasusen-code
 
-import asyncio, aria2p, os, math
+import aria2p, os, math
 from pathlib import Path
 from requests import get
 from asyncio import sleep
@@ -29,8 +31,6 @@ def humanbytes(size: float) -> str:
     return "{:.2f} {}B".format(size, power_dict[t_n])
 
 def aria_start():
-    trackers = []
-    trackers.append(get("https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt").text.replace("\n\n", ","))      
     cmd = f"aria2c \
           --enable-rpc \
           --rpc-listen-all=false \
@@ -46,7 +46,6 @@ def aria_start():
           --min-split-size=10M \
           --follow-torrent=mem \
           --split=10 \
-          --bt-tracker={trackers} \
           --daemon=true \
           --allow-overwrite=true"
     process = subprocess_run(cmd)
