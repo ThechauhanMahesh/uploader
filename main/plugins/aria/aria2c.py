@@ -90,7 +90,7 @@ async def remove_dl(gid):
         print(e)
         pass
       
-async def check_progress_for_dl(gid, event, edit, previous): 
+async def check_progress_for_dl(aria2, gid, event, edit, previous): 
     complete = False
     while not complete:
         try:
