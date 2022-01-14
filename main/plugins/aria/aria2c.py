@@ -34,7 +34,8 @@ def aria_start():
     cmd = f"aria2c \
           --enable-rpc \
           --rpc-listen-all=false \
-          --rpc-listen-port=8100 \
+          --rpc-listen-port=6800 \
+          --enable-dht=true \
           --max-connection-per-server=10 \
           --rpc-max-request-size=1024M \
           --check-certificate=false \
@@ -50,7 +51,7 @@ def aria_start():
           --allow-overwrite=true"
     process = subprocess_run(cmd)
     aria2 = aria2p.API(
-        aria2p.Client(host="http://localhost", port=8100, secret="")
+        aria2p.Client(host="http://localhost", port=6800, secret="")
     )
     return aria2
 
