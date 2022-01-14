@@ -16,13 +16,13 @@ telegraph
 Pillow>=5.3.0
 
 #heroku
-heroku3 #just for restart
+heroku3 
 
 #uploading
-gdown #for gdrive
-aria2p #magnet
-mega.py #mega dl
-git+https://github.com/Juvenal-Yescas/mediafire-dl #mf dl
+gdown 
+aria2p 
+mega.py 
+git+https://github.com/Juvenal-Yescas/mediafire-dl 
 
 #helper
 ethon==1.2.7 
