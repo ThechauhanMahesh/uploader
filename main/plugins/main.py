@@ -17,9 +17,31 @@ from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forces
 process1 = []
 timer = []
 
+#Handy Works-------------------------------------------------------------------------------------------------------------------------------------------
+
 async def upload_button(event, data):
     await event.client.send_message(event.chat_id, file=link_animated, reply_to=event.id, buttons=[[Button.inline("Upload.", data=data)]])
 
+#Set timer to avoid spam
+async def set_timer(event, list1, list2):
+    now = time.time()
+    list2.append(f'{now}')
+    list1.append(f'{event.sender_id}')
+    await event.client.send_message(event.chat_id, 'You can start a new process again after 2 minutes.')
+    await asyncio.sleep(120)
+    list2.pop(int(timer.index(f'{now}')))
+    list1.pop(int(process1.index(f'{event.sender_id}')))
+    
+#check time left in timer
+async def check_timer(event, list1, list2):
+    if f'{event.sender_id}' in list1:
+        index = list1.index(f'{event.sender_id}')
+        last = list2[int(index)]
+        present = time.time()
+        return await event.answer(f"You have to wait {120-round(present-float(last))} seconds more to start a new process!", alert=True)
+
+#Callbacks-------------------------------------------------------------------------------------------------------------------------------------------
+    
 @Drone.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def u(event):
     link = get_link(event.text)
@@ -47,30 +69,16 @@ async def u(event):
         
 @Drone.on(events.callbackquery.CallbackQuery(data="drive"))
 async def d(event):
-    if f'{event.sender_id}' in process1:
-        index = process1.index(f'{event.sender_id}')
-        last = timer[int(index)]
-        present = time.time()
-        return await event.answer(f"You have to wait {120-round(present-float(last))} seconds more to start a new process!", alert=True)
+    await check_timer(event, process1, timer) 
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
     await drive(event, msg) 
-    now = time.time()
-    timer.append(f'{now}')
-    process1.append(f'{event.sender_id}')
-    await event.client.send_message(event.chat_id, 'You can start a new process again after 2 minutes.')
-    await asyncio.sleep(120)
-    timer.pop(int(timer.index(f'{now}')))
-    process1.pop(int(process1.index(f'{event.sender_id}')))
+    await set_timer(event, process1, timer) 
     
 @Drone.on(events.callbackquery.CallbackQuery(data="yt"))
 async def yt(event):
-    if f'{event.sender_id}' in process1:
-        index = process1.index(f'{event.sender_id}')
-        last = timer[int(index)]
-        present = time.time()
-        return await event.answer(f"You have to wait {120-round(present-float(last))} seconds more to start a new process!", alert=True)
+    await check_timer(event, process1, timer) 
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
@@ -85,21 +93,11 @@ async def yt(event):
         return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await ds.delete()
     await upload_file(file, event, edit) 
-    now = time.time()
-    timer.append(f'{now}')
-    process1.append(f'{event.sender_id}')
-    await event.client.send_message(event.chat_id, 'You can start a new process again after 2 minutes.')
-    await asyncio.sleep(120)
-    timer.pop(int(timer.index(f'{now}')))
-    process1.pop(int(process1.index(f'{event.sender_id}')))
+    await set_timer(event, process1, timer) 
     
 @Drone.on(events.callbackquery.CallbackQuery(data="mega"))
 async def m(event):
-    if f'{event.sender_id}' in process1:
-        index = process1.index(f'{event.sender_id}')
-        last = timer[int(index)]
-        present = time.time()
-        return await event.answer(f"You have to wait {120-round(present-float(last))} seconds more to start a new process!", alert=True)
+    await check_timer(event, process1, timer) 
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
@@ -114,21 +112,11 @@ async def m(event):
         return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await ds.delete()
     await upload_as_file(file, event, edit) 
-    now = time.time()
-    timer.append(f'{now}')
-    process1.append(f'{event.sender_id}')
-    await event.client.send_message(event.chat_id, 'You can start a new process again after 2 minutes.')
-    await asyncio.sleep(120)
-    timer.pop(int(timer.index(f'{now}')))
-    process1.pop(int(process1.index(f'{event.sender_id}')))
-
+    await set_timer(event, process1, timer) 
+    
 @Drone.on(events.callbackquery.CallbackQuery(data="mf"))
 async def mf(event):
-    if f'{event.sender_id}' in process1:
-        index = process1.index(f'{event.sender_id}')
-        last = timer[int(index)]
-        present = time.time()
-        return await event.answer(f"You have to wait {120-round(present-float(last))} seconds more to start a new process!", alert=True)
+    await check_timer(event, process1, timer) 
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
@@ -143,21 +131,11 @@ async def mf(event):
         return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await ds.delete()
     await upload_as_file(file, event, edit) 
-    now = time.time()
-    timer.append(f'{now}')
-    process1.append(f'{event.sender_id}')
-    await event.client.send_message(event.chat_id, 'You can start a new process again after 2 minutes.')
-    await asyncio.sleep(120)
-    timer.pop(int(timer.index(f'{now}')))
-    process1.pop(int(process1.index(f'{event.sender_id}')))
-
+    await set_timer(event, process1, timer) 
+    
 @Drone.on(events.callbackquery.CallbackQuery(data="upload"))
 async def u(event):
-    if f'{event.sender_id}' in process1:
-        index = process1.index(f'{event.sender_id}')
-        last = timer[int(index)]
-        present = time.time()
-        return await event.answer(f"You have to wait {120-round(present-float(last))} seconds more to start a new process!", alert=True)
+    await check_timer(event, process1, timer) 
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
@@ -187,14 +165,7 @@ async def u(event):
         return await edit.edit(f'An error `[{e}]` occured!\n\nContact [SUPPORT]({SUPPORT_LINK})', link_preview=False) 
     await ds.delete()
     await upload_file(file, event, edit) 
-    now = time.time()
-    timer.append(f'{now}')
-    process1.append(f'{event.sender_id}')
-    await event.client.send_message(event.chat_id, 'You can start a new process again after 2 minutes.')
-    await asyncio.sleep(120)
-    timer.pop(int(timer.index(f'{now}')))
-    process1.pop(int(process1.index(f'{event.sender_id}')))
-
+    await set_timer(event, process1, timer) 
         
 @Drone.on(events.NewMessage(incoming=True, pattern="/magnet"))
 async def magnet(event):
