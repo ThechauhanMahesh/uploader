@@ -93,7 +93,6 @@ async def check_progress_for_dl(aria2, gid, event, edit, previous):
                     f"GROSS: {humanbytes(downloaded)} ~ {t_file.total_length_string()}\n\n"
                     f"SPEED: {t_file.download_speed_string()}\n\n"
                     f"ETA: {t_file.eta_string()}\n\n"
-                    f"NAME: `{t_file.name}`"
                 )
                 if msg != previous:
                     await edit.edit(msg)
