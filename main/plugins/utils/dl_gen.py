@@ -47,7 +47,7 @@ def yandex_disk(link):
     return dl_url
 
 
-def mega_dl(url: str) -> str:
+def mega_dl(link):
     """ MEGA.nz direct links generator
     Using https://github.com/tonikelope/megadown"""
     command = f'bin/megadown -q -m {link}'
