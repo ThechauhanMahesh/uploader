@@ -13,7 +13,8 @@ aria2c --enable-rpc --check-certificate=false \
    --disk-cache=32M --bt-enable-lpd=true --seed-time=0 --max-file-not-found=0 \
    --max-tries=20 --auto-file-renaming=true --reuse-uri=true --http-accept-gzip=true \
    --content-disposition-default-utf8=true --netrc-path=/usr/src/app/.netrc \
-   --enable-dht=true --enable-dht6=true
+   --enable-dht=true --enable-dht6=true --dht-file-path=/app/dht.dat --dht-file-path6=/app/dht6.dat \
+   --dht-listen-port=51513 --dht-entry-point=dht.transmissionbt.com:6881 --dht-entry-point6=dht.transmissionbt.com:6881
    
 echo "Running main"
 python3 -m main
