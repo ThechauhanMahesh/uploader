@@ -8,7 +8,9 @@ RUN apt -qq update --fix-missing
 RUN apt -qq install -y git \
     aria2 \
     python3 \
-    python3-pip
+    python3-pip \
+    wget \
+    curl
 COPY . .
 RUN pip3 install -r requirements.txt
 CMD ["bash","start.sh"]
