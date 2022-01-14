@@ -8,7 +8,7 @@ from asyncio import sleep
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
 
 from main.plugins.utils.utils import upload_file
-from .aria2c_conf import conf
+from .aria2c_conf import conf, track
 
 def humanbytes(size: float) -> str:
     """ humanize size """
