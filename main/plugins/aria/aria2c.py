@@ -10,6 +10,7 @@ from main.plugins.utils.utils import upload_file
 def subprocess_run(cmd):
     subproc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True)
     talk = subproc.communicate()
+    print(str(talk))
     exitCode = subproc.returncode
     if exitCode != 0:
         return
@@ -27,13 +28,13 @@ def humanbytes(size: float) -> str:
         t_n += 1
     return "{:.2f} {}B".format(size, power_dict[t_n])
 
-def aria2c_start():
+def aria2_start():
     trackers = []
     trackers.append(get("https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt").text.replace("\n\n", ","))      
     cmd = f"aria2c \
           --enable-rpc \
           --rpc-listen-all=false \
-          --rpc-listen-port=6800 \
+          --rpc-listen-port=8100 \
           --max-connection-per-server=10 \
           --rpc-max-request-size=1024M \
           --check-certificate=false \
@@ -48,10 +49,8 @@ def aria2c_start():
           --daemon=true \
           --allow-overwrite=true"
     process = subprocess_run(cmd)
-    
-def aria_start():
     aria2 = aria2p.API(
-        aria2p.Client(host="http://localhost", port=6800, secret="")
+        aria2p.Client(host="http://localhost", port=8100, secret="")
     )
     return aria2
 
