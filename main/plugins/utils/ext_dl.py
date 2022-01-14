@@ -2,6 +2,7 @@
 # Github.com/vasusen-code
 
 from mega import Mega
+import mediafire_dl
 
 #download from mediafire
 def mfdl(url):
