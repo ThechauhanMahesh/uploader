@@ -3,89 +3,61 @@ from telethon.tl.types import KeyboardButtonCallback
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
 from functools import partial
 
-async def aria_start():
-    aria2_daemon_start_cmd = []
-    # start the daemon, aria2c command
-    aria2_daemon_start_cmd.append("aria2c")
-    aria2_daemon_start_cmd.append("--allow-overwrite=true")
-    aria2_daemon_start_cmd.append("--daemon=true")
-    aria2_daemon_start_cmd.append("--enable-rpc")
-    aria2_daemon_start_cmd.append("--disk-cache=0")
-    aria2_daemon_start_cmd.append("--follow-torrent=false")
-    aria2_daemon_start_cmd.append("--max-connection-per-server=10")
-    aria2_daemon_start_cmd.append("--min-split-size=10M")
-    aria2_daemon_start_cmd.append("--rpc-listen-all=true")
-    aria2_daemon_start_cmd.append(f"--rpc-listen-port=8100")
-    aria2_daemon_start_cmd.append("--rpc-max-request-size=1024M")
-    aria2_daemon_start_cmd.append("--seed-ratio=0.0")
-    aria2_daemon_start_cmd.append("--seed-time=1")
-    aria2_daemon_start_cmd.append("--split=10")
-    aria2_daemon_start_cmd.append(f"--bt-stop-timeout=100")
-    aria2_daemon_start_cmd.append(f"--max-tries=10")
-    aria2_daemon_start_cmd.append(f"--retry-wait=2")
-    process = await asyncio.create_subprocess_exec(
-        *aria2_daemon_start_cmd,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE
-    )
-    stdout, stderr = await process.communicate()
-    print(stdout)
-    print(stderr)
+def subprocess_run(cmd):
+    subproc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True)
+    talk = subproc.communicate()
+    exitCode = subproc.returncode
+    if exitCode != 0:
+        return
+    return talk
+
+def humanbytes(size: float) -> str:
+    """ humanize size """
+    if not size:
+        return ""
+    power = 1024
+    t_n = 0
+    power_dict = {0: ' ', 1: 'Ki', 2: 'Mi', 3: 'Gi', 4: 'Ti'}
+    while size > power:
+        size /= power
+        t_n += 1
+    return "{:.2f} {}B".format(size, power_dict[t_n])
+
+def aria_start():
+    trackers_list = get(
+    "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
+).text.replace("\n\n", ",")
+    trackers = f"{trackers_list}"
+    cmd = f"aria2c \
+          --enable-rpc \
+          --rpc-listen-all=false \
+          --rpc-listen-port=6800 \
+          --max-connection-per-server=10 \
+          --rpc-max-request-size=1024M \
+          --check-certificate=false \
+          --follow-torrent=mem \
+          --seed-time=1 \
+          --seed-ratio=0.01.\
+          --max-overall-upload-limit=2M \
+          --max-concurrent-downloads=2 \
+          --min-split-size=10M \
+          --follow-torrent=mem \
+          --split=10 \
+          --bt-tracker={trackers} \
+          --daemon=true \
+          --allow-overwrite=true"
+    process = subprocess_run(cmd)
     aria2 = aria2p.API(
         aria2p.Client(host="http://localhost", port=6800, secret="")
     )
     return aria2
 
-async def add_magnet(aria_instance, magnetic_link):
+def add_magnet(aria2, magnet_link):
     try:
-        download = aria_instance.add_magnet(magnetic_link, options=None)
+        download = aria2.add_magnet(magnet_link, options=None)
         return True, download.gid
     except Exception as e:
         return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links."
-
-
-async def add_torrent(aria_instance, torrent_file_path):
-    if torrent_file_path is None:
-        return False, "**FAILED** \n\nsomething went wrong when trying to add <u>TORRENT</u> file"
-    if os.path.exists(torrent_file_path):
-        # Add Torrent Into Queue
-        try:
-
-            download = await aloop.run_in_executor(None, partial(aria_instance.add_torrent, torrent_file_path, uris=None, options=None, position=None))
-
-        except Exception as e:
-            return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /help"
-        return True, download.gid
-    else:
-        return False, "**FAILED** \n" + str(e) + " \nPlease try other sources to get workable link"
-
-async def add_url(aria_instance, text_url, c_file_name):
-    uris = [text_url]
-    # Add URL Into Queue
-    try:
-        
-        download = await aloop.run_in_executor(None, aria_instance.add_uris, uris)
-
-    except Exception as e:
-        return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /help"
-    return True, "" + download.gid + ""
-
-async def check_metadata(aria2, gid):
-    file = await aloop.run_in_executor(None, aria2.get_download, gid)
-    if not file.followed_by_ids:
-        return None
-    new_gid = file.followed_by_ids[0]
-    print("Changing GID " + gid + " to " + new_gid)
-    return new_gid
-
-async def remove_dl(gid):
-    aria2 = await aria_start()
-    try:
-        downloads = await aloop.run_in_executor(None, aria2.get_download, gid)
-        downloads.remove(force=True, files=True)
-    except Exception as e:
-        print(e)
-        pass
       
 async def check_progress_for_dl(aria2, gid, event, edit, previous): 
     complete = False
