@@ -200,7 +200,7 @@ async def magnet(event):
     msg = await event.get_reply_message() 
     edit = await event.client.send_message(event.chat_id, "Trying to process.", reply_to=msg.id)
     aria2 = await aria_start()
-    status, o = await add_magnet(aria2, magnetic_link, c_file_name)
+    status, o = await add_magnet(aria2, msg.text)
     if status is True:
         await check_progress_for_dl(aria2, o, event, edit, "")
     else:
