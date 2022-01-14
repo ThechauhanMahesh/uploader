@@ -6,8 +6,6 @@ from ..core.status.status import ARTask
 from functools import partial
 
 # referenced from public leech
-# pylint: disable=no-value-for-parameter
-torlog = logging.getLogger(__name__)
 aloop = asyncio.get_event_loop()
 
 async def aria_start():
@@ -54,7 +52,7 @@ async def add_magnet(aria_instance, magnetic_link, c_file_name):
 
 async def add_torrent(aria_instance, torrent_file_path):
     if torrent_file_path is None:
-        return False, "**FAILED** \n\nsomething wrongings when trying to add <u>TORRENT</u> file"
+        return False, "**FAILED** \n\nsomething went wrong when trying to add <u>TORRENT</u> file"
     if os.path.exists(torrent_file_path):
         # Add Torrent Into Queue
         try:
@@ -83,11 +81,10 @@ async def add_url(aria_instance, text_url, c_file_name):
 
 async def check_metadata(aria2, gid):
     file = await aloop.run_in_executor(None, aria2.get_download, gid)
-    torlog.info(file)
     if not file.followed_by_ids:
         return None
     new_gid = file.followed_by_ids[0]
-    torlog.info("Changing GID " + gid + " to " + new_gid)
+    print("Changing GID " + gid + " to " + new_gid)
     return new_gid
 
 async def aria_dl(
