@@ -34,9 +34,8 @@ async def aria_start():
           --enable-rpc \
           --rpc-listen-all=false \
           --rpc-listen-port=6800 \
-          --conf-path=./main/plugins/utils/aria2.conf \
           --max-connection-per-server=10 \
-          --rpc-max-request-size=1024M \
+          --rpc-max-request-size=1600M \
           --check-certificate=false \
           --follow-torrent=mem \
           --seed-time=1 \
