@@ -3,9 +3,6 @@ from telethon.tl.types import KeyboardButtonCallback
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
 from functools import partial
 
-# referenced from public leech
-aloop = asyncio.get_event_loop()
-
 async def aria_start():
     aria2_daemon_start_cmd = []
     # start the daemon, aria2c command
@@ -34,17 +31,17 @@ async def aria_start():
     stdout, stderr = await process.communicate()
     print(stdout)
     print(stderr)
-    arcli = await aloop.run_in_executor(None, partial(aria2p.Client, host="http://localhost", port=8100, secret=""))
-    aria2 = await aloop.run_in_executor(None, aria2p.API, arcli)
-
+    aria2 = aria2p.API(
+        aria2p.Client(host="http://localhost", port=6800, secret="")
+    )
     return aria2
 
 async def add_magnet(aria_instance, magnetic_link):
     try:
-        download = await aloop.run_in_executor(None, aria_instance.add_magnet, magnetic_link)
+        download = aria_instance.add_magnet(magnetic_link, options=None)
+        return True, download.gid
     except Exception as e:
-        return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /help"
-    return True, download.gid
+        return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links."
 
 
 async def add_torrent(aria_instance, torrent_file_path):
@@ -94,7 +91,7 @@ async def check_progress_for_dl(aria2, gid, event, edit, previous):
     complete = False
     while not complete:
         try:
-            t_file = await aloop.run_in_executor(None, aria2.get_download, gid)
+            t_file = aria2.get_download(gid)
         except:
             return await edit.edit("Download cancelled by user.")
         complete = t_file.is_complete
