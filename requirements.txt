@@ -19,8 +19,12 @@ Pillow>=5.3.0
 heroku3 #just for restart
 
 #uploading
-gdown #For gdrive 
-mega.py #for mega files
-ethon==1.2.7 #for weburl and ytdlp
-git+https://github.com/Juvenal-Yescas/mediafire-dl #for mediafire files
+gdown #for gdrive 
 aria2p #magnet
+bs4 #scrapping
+urllib
+requests
+humanize #scrapping 
+
+#helper
+ethon==1.2.7 
