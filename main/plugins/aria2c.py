@@ -66,7 +66,6 @@ async def aria_start():
         aria2p.Client(host="http://localhost", port=6800, secret="")
     )
     return aria2
-aria2p_client = await aria_start()
 
 async def check_metadata(gid):
     t_file = aria2p_client.get_download(gid)
