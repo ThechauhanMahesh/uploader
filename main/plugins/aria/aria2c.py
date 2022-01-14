@@ -25,8 +25,7 @@ def humanbytes(size: float) -> str:
 
 def aria_start():
     trackers_list = get(
-    "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
-).text.replace("\n\n", ",")
+    "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt").text.replace("\n\n", ",")
     trackers = f"{trackers_list}"
     cmd = f"aria2c \
           --enable-rpc \
