@@ -46,7 +46,7 @@ def aria2c_start():
           --check-certificate=false \
           --follow-torrent=mem \
           --seed-time=0 \
-          --max-overall-upload-limit=2M \
+          --max-overall-upload-limit=1k \
           --max-concurrent-downloads=2 \
           --min-split-size=10M \
           --follow-torrent=mem \
@@ -56,7 +56,7 @@ def aria2c_start():
           --allow-overwrite=true"
     process = subprocess_run(cmd)
     
-def 
+def aria_start():
     aria2 = aria2p.API(
         aria2p.Client(host="http://localhost", port=6800, secret="")
     )
