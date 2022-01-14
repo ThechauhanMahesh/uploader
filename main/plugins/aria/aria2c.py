@@ -144,5 +144,5 @@ async def check_progress_for_dl(aria2, gid, event, edit, previous):
                 return await edit.edit("The Download was canceled.")
             else:
                 print(str(e))
-                return edit.edit(f"Error: {str(e)})"
+                return edit.edit(f"Error: {str(e)}")
         
