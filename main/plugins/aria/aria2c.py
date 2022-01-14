@@ -44,7 +44,7 @@ async def add_magnet(aria_instance, magnetic_link):
         download = await aloop.run_in_executor(None, aria_instance.add_magnet, magnetic_link)
     except Exception as e:
         return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /help"
-    return True, "" + download.gid + ""
+    return True, download.gid
 
 
 async def add_torrent(aria_instance, torrent_file_path):
