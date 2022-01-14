@@ -6,8 +6,6 @@ import os
 import time
 import gdown
 import asyncio
-import mediafire_dl 
-from mega import Mega 
 from .. import Drone, BOT_UN
 from telethon import events
 from datetime import datetime as dt
