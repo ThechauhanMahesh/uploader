@@ -9,14 +9,12 @@ from datetime import datetime
 from telethon import events, Button
 from main.plugins.external import drive, mfdl, mega_dl
 from ethon.uploader import weburl, ytdl, download_from_youtube
-from main.plugins.aria.aria2c import aria2c_start, aria_start, add_magnet, check_progress_for_dl
+from main.plugins.aria.aria2c import aria_start, add_magnet, check_progress_for_dl
 from main.plugins.utils.utils import get_link, upload_file, force_sub, upload_as_file
 from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
 
 process1 = []
 timer = []
-
-aria2c_start()
 
 async def upload_button(event, data):
     await event.client.send_message(event.chat_id, file=link_animated, reply_to=event.id, buttons=[[Button.inline("Upload.", data=data)]])
