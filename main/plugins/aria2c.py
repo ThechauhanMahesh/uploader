@@ -3,15 +3,24 @@
 
 import asyncio
 from asyncio import sleep
-import math
+
 import os
+import math
+import aria2p
+from requests import get
 from pathlib import Path
 from subprocess import PIPE, Popen
-from requests import get
+from telethon import events
 from ethon.pyfunc import bash
 from main.plugins.utils.utils import upload_file
-from telethon import events
-import aria2p
+
+def subprocess_run(cmd):
+    subproc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True)
+    talk = subproc.communicate()
+    exitCode = subproc.returncode
+    if exitCode != 0:
+        return
+    return talk
 
 def humanbytes(size: float) -> str:
     """ humanize size """
