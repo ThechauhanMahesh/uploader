@@ -35,7 +35,7 @@ async def aria_start():
           --rpc-listen-all=false \
           --rpc-listen-port=6800 \
           --max-connection-per-server=10 \
-          --rpc-max-request-size=1600M \
+          --rpc-max-request-size=1024M \
           --check-certificate=false \
           --follow-torrent=mem \
           --seed-time=1 \
