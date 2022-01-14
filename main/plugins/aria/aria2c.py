@@ -39,7 +39,7 @@ async def aria_start():
 
     return aria2
 
-async def add_magnet(aria_instance, magnetic_link, c_file_name):
+async def add_magnet(aria_instance, magnetic_link):
     try:
         download = await aloop.run_in_executor(None, aria_instance.add_magnet, magnetic_link)
     except Exception as e:
