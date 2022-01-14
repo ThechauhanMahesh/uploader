@@ -1,7 +1,7 @@
 # (c) MaheshChauhan
 # Github.com/vasusen-code
 
-from zippyshare_downloader import extract_info, extract_info_coro
+from mega import Mega
 
 #download from mediafire
 def mfdl(url):
@@ -18,7 +18,3 @@ def mega_dl(url):
     file = (os.listdir(path))[0]
     return str(path + '/' + file)
 
-def zippy_dl(url):
-    # by default, parameter download is True
-    file = extract_info(url, download=True)
-    return file
