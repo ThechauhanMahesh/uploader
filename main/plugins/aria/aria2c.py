@@ -1,10 +1,10 @@
 #tg:ChauhanMahesh/DroneBots
 #github.com/vasusen-code
 
-import aria2p, os, math, subprocess
 from pathlib import Path
 from requests import get
 from asyncio import sleep
+import aria2p, os, math, subprocess, asyncio
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
 
 from main.plugins.utils.utils import upload_file
