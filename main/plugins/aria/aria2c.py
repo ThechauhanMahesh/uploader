@@ -35,7 +35,7 @@ def aria_start():
           --enable-rpc \
           --rpc-listen-all=false \
           --rpc-listen-port=6800 \
-          --enable-dht=true \
+          --conf-path=/app/main/plugins/aria2/aria2.conf \
           --max-connection-per-server=10 \
           --rpc-max-request-size=1024M \
           --check-certificate=false \
