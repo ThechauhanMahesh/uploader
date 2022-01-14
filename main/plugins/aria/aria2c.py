@@ -40,8 +40,8 @@ def aria_start():
           --rpc-max-request-size=1024M \
           --check-certificate=false \
           --follow-torrent=mem \
-          --seed-time=0 \
-          --max-overall-upload-limit=1k \
+          --seed-time=1 \
+          --max-overall-upload-limit=2M \
           --max-concurrent-downloads=2 \
           --min-split-size=10M \
           --follow-torrent=mem \
