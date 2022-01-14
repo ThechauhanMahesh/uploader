@@ -97,7 +97,7 @@ async def check_progress_for_dl(gid, event, edit, previous):
                     t_file.progress_string(),
                 )
                 msg = (
-                    f"{prog_str}\n"
+                    f"{prog_str}\n\n"
                     f"GROSS: {humanbytes(downloaded)} ~ {t_file.total_length_string()}\n\n"
                     f"SPEED: {t_file.download_speed_string()}\n\n"
                     f"ETA: {t_file.eta_string()}\n\n"
