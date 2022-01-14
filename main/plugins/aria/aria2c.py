@@ -3,6 +3,7 @@ import asyncio, aria2p, os, math
 from pathlib import Path
 from requests import get
 from asyncio import sleep
+from subprocess import PIPE, Popen
 from telethon.tl.types import KeyboardButtonCallback
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
 from functools import partial
