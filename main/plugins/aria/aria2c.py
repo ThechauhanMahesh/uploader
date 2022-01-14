@@ -6,7 +6,9 @@ from pathlib import Path
 from requests import get
 from asyncio import sleep
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
+
 from main.plugins.utils.utils import upload_file
+from .aria2c_conf import conf
 
 def humanbytes(size: float) -> str:
     """ humanize size """
@@ -20,7 +22,20 @@ def humanbytes(size: float) -> str:
         t_n += 1
     return "{:.2f} {}B".format(size, power_dict[t_n])
 
-def aria_start():
+async def aria_start():
+    curl = get(track).text.replace("\n\n", ",")
+    trackers = [f'{curl}']
+    cmd = conf.split()
+    cmd.append(f"--bt-tracker={trackers}")
+    print('starting aria2')
+    process = await asyncio.create_subprocess_exec(
+        *cmd,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )
+    stdout, stderr = await process.communicate()
+    print(stdout)
+    print(stderr)
     aria2 = aria2p.API(
         aria2p.Client(host="http://localhost", port=6800, secret="")
     )
