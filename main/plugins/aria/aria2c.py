@@ -9,6 +9,13 @@ from telethon.errors.rpcerrorlist import MessageNotModifiedError
 from functools import partial
 from main.plugins.utils.utils import upload_file
 
+def subprocess_run(cmd):
+    subproc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True)
+    talk = subproc.communicate()
+    exitCode = subproc.returncode
+    if exitCode != 0:
+        return
+    return talk
 
 def humanbytes(size: float) -> str:
     """ humanize size """
