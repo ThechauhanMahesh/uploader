@@ -1,4 +1,4 @@
-import asyncio, aria2p, logging, os
+import asyncio, aria2p, os
 from telethon.tl.types import KeyboardButtonCallback
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
 from functools import partial
@@ -62,7 +62,6 @@ async def add_torrent(aria_instance, torrent_file_path):
     else:
         return False, "**FAILED** \n" + str(e) + " \nPlease try other sources to get workable link"
 
-
 async def add_url(aria_instance, text_url, c_file_name):
     uris = [text_url]
     # Add URL Into Queue
@@ -91,6 +90,59 @@ async def remove_dl(gid):
         print(e)
         pass
       
-      
-      
-      
+async def check_progress_for_dl(gid, event, edit, previous): 
+    complete = False
+    while not complete:
+        try:
+            t_file = await aloop.run_in_executor(None, aria2.get_download, gid)
+        except:
+            return await edit.edit("Download cancelled by user.")
+        complete = t_file.is_complete
+        try:
+            if t_file.error_message:
+                await edit.edit(str(t_file.error_message))
+                return
+            if not complete and not t_file.error_message:
+                if t_file.has_failed:
+                    return await edit.edit("Download cancelled!\n\nstatus- **FAILED**")
+                percentage = int(t_file.progress)
+                downloaded = percentage * int(t_file.total_length) / 100
+                prog_str = "**DOWNLOADING FILE:**\n\n**[{0}] |** `{1}`".format(
+                    "".join(
+                        "█"
+                        for i in range(math.floor(percentage / 10))
+                    ),
+                    t_file.progress_string(),
+                )
+                msg = (
+                    f"{prog_str}\n\n"
+                    f"GROSS: {humanbytes(downloaded)} ~ {t_file.total_length_string()}\n\n"
+                    f"SPEED: {t_file.download_speed_string()}\n\n"
+                    f"ETA: {t_file.eta_string()}\n\n"
+                    f"NAME: `{t_file.name}`"
+                )
+                if msg != previous:
+                    await edit.edit(msg)
+                    previous = msg
+            else:
+                if complete:
+                    await upload_file(Path(t_file.name), event, edit) 
+        except aria2p.client.ClientException as e:
+            if " not found" in str(e) or "'file'" in str(e):
+                return edit.edit(f"The Download was canceled.")
+            else:
+                await edit.edit("Errored due to ta client error.")
+            pass
+        except MessageNotModifiedError:
+            pass
+        except RecursionError:
+            t_file.remove(force=True)
+            return edit.edit("The link is dead.")
+        except Exception as e:
+            print(str(e))
+            if "not found" in str(e) or "'file'" in str(e):
+                return await edit.edit("The Download was canceled.")
+            else:
+                print(str(e))
+                return edit.edit(f"Error: {str(e)})"
+        
