@@ -46,18 +46,6 @@ def yandex_disk(link):
     dl_url = requests.get(api.format(link)).json()['href']
     return dl_url
 
-
-def mega_dl(link):
-    """ MEGA.nz direct links generator
-    Using https://github.com/tonikelope/megadown"""
-    command = f'bin/megadown -q -m {link}'
-    result = popen(command).read()
-    data = json.loads(result)
-    print(data)
-    dl_url = data['url']
-    return dl_url
-
-
 def cm_ru(url: str) -> str:
     """ cloud.mail.ru direct links generator
     Using https://github.com/JrMasterModelBuilder/cmrudl.py"""
