@@ -30,11 +30,6 @@ def humanbytes(size: float) -> str:
 def aria2c_start():
     trackers = []
     trackers.append(get("https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt").text.replace("\n\n", ","))      
-    trackers.append(get("https://raw.githubusercontent.com/XIU2/TrackersListCollection/master/all.txt").text.replace("\n\n", ","))
-    trackers.append(get("https://ngosang.github.io/trackerslist/trackers_all_http.txt").text.replace("\n\n", ","))
-    trackers.append(get("https://newtrackon.com/api/all https://raw.githubusercontent.com/DeSireFire/animeTrackerList/master/AT_all.txt").text.replace("\n\n", ","))
-    trackers.append(get("https://raw.githubusercontent.com/hezhijie0327/Trackerslist/main/trackerslist_tracker.txt").text.replace("\n\n", ","))
-    trackers.append(get("https://raw.githubusercontent.com/hezhijie0327/Trackerslist/main/trackerslist_exclude.txt").text.replace("\n\n", ","))
     cmd = f"aria2c \
           --enable-rpc \
           --rpc-listen-all=false \
