@@ -5,18 +5,8 @@ import aria2p, os, math
 from pathlib import Path
 from requests import get
 from asyncio import sleep
-from subprocess import PIPE, Popen
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
 from main.plugins.utils.utils import upload_file
-
-def subprocess_run(cmd):
-    subproc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True)
-    talk = subproc.communicate()
-    print(str(talk))
-    exitCode = subproc.returncode
-    if exitCode != 0:
-        return
-    return talk
 
 def humanbytes(size: float) -> str:
     """ humanize size """
@@ -31,23 +21,6 @@ def humanbytes(size: float) -> str:
     return "{:.2f} {}B".format(size, power_dict[t_n])
 
 def aria_start():
-    cmd = f"aria2c \
-          --enable-rpc \
-          --rpc-listen-all=false \
-          --rpc-listen-port=6800 \
-          --conf-path=/app/main/plugins/aria/aria2.conf \
-          --max-connection-per-server=10 \
-          --rpc-max-request-size=1024M \
-          --check-certificate=false \
-          --follow-torrent=mem \
-          --max-overall-upload-limit=1K \
-          --max-concurrent-downloads=2 \
-          --min-split-size=10M \
-          --follow-torrent=mem \
-          --split=10 \
-          --daemon=true \
-          --allow-overwrite=true"
-    process = subprocess_run(cmd)
     aria2 = aria2p.API(
         aria2p.Client(host="http://localhost", port=6800, secret="")
     )
