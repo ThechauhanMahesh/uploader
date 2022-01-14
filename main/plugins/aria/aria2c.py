@@ -34,8 +34,8 @@ async def aria_start():
         stderr=asyncio.subprocess.PIPE,
     )
     stdout, stderr = await process.communicate()
-    print(stdout)
-    print(stderr)
+    print(stdout.decode().strip())
+    print(stderr.decode().strip())
     aria2 = aria2p.API(
         aria2p.Client(host="http://localhost", port=6800, secret="")
     )
