@@ -57,14 +57,6 @@ def cm_ru(url: str) -> str:
     return dl_url
 
 
-def mediafire(url: str) -> str:
-    """ MediaFire direct links generator """
-    page = BeautifulSoup(requests.get(link).content, 'lxml')
-    info = page.find('a', {'aria-label': 'Download file'})
-    dl_url = info.get('href')
-    return dl_url
-
-
 def sourceforge(url: str) -> str:
     """ SourceForge direct links generator """
     dl_url = ''
