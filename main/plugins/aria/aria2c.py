@@ -29,10 +29,14 @@ def humanbytes(size: float) -> str:
         t_n += 1
     return "{:.2f} {}B".format(size, power_dict[t_n])
 
-def aria_start():
-    trackers_list = get(
-    "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt").text.replace("\n\n", ",")
-    trackers = f"{trackers_list}"
+def aria2c_start():
+    trackers = []
+    trackers.append(get("https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt").text.replace("\n\n", ","))      
+    trackers.append(get("https://raw.githubusercontent.com/XIU2/TrackersListCollection/master/all.txt").text.replace("\n\n", ","))
+    trackers.append(get("https://ngosang.github.io/trackerslist/trackers_all_http.txt").text.replace("\n\n", ","))
+    trackers.append(get("https://newtrackon.com/api/all https://raw.githubusercontent.com/DeSireFire/animeTrackerList/master/AT_all.txt").text.replace("\n\n", ","))
+    trackers.append(get("https://raw.githubusercontent.com/hezhijie0327/Trackerslist/main/trackerslist_tracker.txt").text.replace("\n\n", ","))
+    trackers.append(get("https://raw.githubusercontent.com/hezhijie0327/Trackerslist/main/trackerslist_exclude.txt").text.replace("\n\n", ","))
     cmd = f"aria2c \
           --enable-rpc \
           --rpc-listen-all=false \
@@ -41,8 +45,7 @@ def aria_start():
           --rpc-max-request-size=1024M \
           --check-certificate=false \
           --follow-torrent=mem \
-          --seed-time=1 \
-          --seed-ratio=0.01.\
+          --seed-time=0 \
           --max-overall-upload-limit=2M \
           --max-concurrent-downloads=2 \
           --min-split-size=10M \
@@ -52,6 +55,8 @@ def aria_start():
           --daemon=true \
           --allow-overwrite=true"
     process = subprocess_run(cmd)
+    
+def 
     aria2 = aria2p.API(
         aria2p.Client(host="http://localhost", port=6800, secret="")
     )
