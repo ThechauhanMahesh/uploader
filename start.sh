@@ -12,7 +12,8 @@ aria2c --enable-rpc --check-certificate=false \
    --peer-id-prefix=-qB4380- --user-agent=qBittorrent/4.3.8 --peer-agent=qBittorrent/4.3.8 \
    --disk-cache=32M --bt-enable-lpd=true --seed-time=0 --max-file-not-found=0 \
    --max-tries=20 --auto-file-renaming=true --reuse-uri=true --http-accept-gzip=true \
-   --content-disposition-default-utf8=true --netrc-path=/usr/src/app/.netrc
+   --content-disposition-default-utf8=true --netrc-path=/usr/src/app/.netrc \
+   --enable-dht=true --enable-dht6=true
    
 echo "Running main"
 python3 -m main
