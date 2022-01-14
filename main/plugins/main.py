@@ -9,7 +9,7 @@ from datetime import datetime
 from telethon import events, Button
 from main.plugins.external import drive, mfdl, mega_dl
 from ethon.uploader import weburl, ytdl, download_from_youtube
-from main.plugins.aria2c import aria_start, check_progress_for_dl
+from main.plugins.aria2c import aria2p_client, check_progress_for_dl
 from main.plugins.utils.utils import get_link, upload_file, force_sub, upload_as_file
 from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
 
@@ -201,12 +201,11 @@ async def magnet(event):
     edit = await event.client.send_message(event.chat_id, "Trying to process.", reply_to=msg.id)
     download = None
     try:
-        aria2p_client = await aria_start()
         download = aria2p_client.add_magnet(msg.text, options=None)
     except Exception as e:
         return await edit.edit(str(e))
     gid = download.gid
-    await check_progress_for_dl(xaria2p_client, gid, event, edit, None)
+    await check_progress_for_dl(gid, event, edit, None)
     
     
     
