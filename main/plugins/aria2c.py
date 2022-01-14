@@ -30,43 +30,40 @@ async def aria_start():
     "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
 ).text.replace("\n\n", ",")
     trackers = f"[{trackers_list}]"
-    cmd = ["aria2c",
-           "--enable-rpc",
-           " --rpc-listen-all=false",
-           "--rpc-listen-port=6800",
-           "--max-connection-per-server=10",
-           "--rpc-max-request-size=1600M",
-           "--check-certificate=false",
-           "--follow-torrent=mem",
-           "--seed-time=1",
-           "--seed-ratio=0.01",
-           "--max-overall-upload-limit=2M",
-           "--max-concurrent-downloads=2",
-           "--min-split-size=10M",
-           "--follow-torrent=mem",
-           "--split=10",
-           f"--bt-tracker={trackers}",
-           "--daemon=true",
-           "--allow-overwrite=true"]
-    process = await asyncio.create_subprocess_exec(
-        *cmd,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-    )
-    stdout, stderr = await process.communicate()
+    cmd = f"aria2c \
+          --enable-rpc \
+          --rpc-listen-all=false \
+          --rpc-listen-port=6800 \
+          --conf-path=./main/plugins/utils/aria2.conf \
+          --max-connection-per-server=10 \
+          --rpc-max-request-size=1024M \
+          --check-certificate=false \
+          --follow-torrent=mem \
+          --seed-time=1 \
+          --seed-ratio=0.01.\
+          --max-overall-upload-limit=2M \
+          --max-concurrent-downloads=2 \
+          --min-split-size=10M \
+          --follow-torrent=mem \
+          --split=10 \
+          --bt-tracker={trackers} \
+          --daemon=true \
+          --allow-overwrite=true"
+    process = subprocess_run(cmd)
     aria2 = aria2p.API(
         aria2p.Client(host="http://localhost", port=6800, secret="")
     )
     return aria2
+aria2p_client = aria_start()
 
-async def check_metadata(aria2p_client, gid):
+async def check_metadata(gid):
     t_file = aria2p_client.get_download(gid)
     if not t_file.followed_by_ids:
         return None
     new_gid = t_file.followed_by_ids[0]
     return new_gid
 
-async def check_progress_for_dl(aria2p_client, gid, event, edit, previous): 
+async def check_progress_for_dl(gid, event, edit, previous): 
     complete = False
     while not complete:
         try:
