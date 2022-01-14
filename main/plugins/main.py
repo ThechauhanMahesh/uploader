@@ -201,11 +201,12 @@ async def magnet(event):
     edit = await event.client.send_message(event.chat_id, "Trying to process.", reply_to=msg.id)
     download = None
     try:
+        aria2p_client = await aria_start()
         download = aria2p_client.add_magnet(msg.text, options=None)
     except Exception as e:
         return await edit.edit(str(e))
     gid = download.gid
-    await check_progress_for_dl(gid, event, edit, None)
+    await check_progress_for_dl(xaria2p_client, gid, event, edit, None)
     
     
     
