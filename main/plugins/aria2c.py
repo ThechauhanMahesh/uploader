@@ -25,14 +25,6 @@ def humanbytes(size: float) -> str:
         t_n += 1
     return "{:.2f} {}B".format(size, power_dict[t_n])
    
-def subprocess_run(cmd):
-    subproc = Popen(cmd, stdout=PIPE, stderr=PIPE, shell=True, universal_newlines=True)
-    talk = subproc.communicate()
-    exitCode = subproc.returncode
-    if exitCode != 0:
-        return
-    return talk
-
 async def aria_start():
     trackers_list = get(
     "https://raw.githubusercontent.com/ngosang/trackerslist/master/trackers_best.txt"
@@ -67,14 +59,14 @@ async def aria_start():
     )
     return aria2
 
-async def check_metadata(gid):
+async def check_metadata(aria2p_client, gid):
     t_file = aria2p_client.get_download(gid)
     if not t_file.followed_by_ids:
         return None
     new_gid = t_file.followed_by_ids[0]
     return new_gid
 
-async def check_progress_for_dl(gid, event, edit, previous): 
+async def check_progress_for_dl(aria2p_client, gid, event, edit, previous): 
     complete = False
     while not complete:
         try:
