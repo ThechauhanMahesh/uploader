@@ -1,8 +1,6 @@
 import asyncio, aria2p, logging, os
-from ..core.getVars import get_val
 from telethon.tl.types import KeyboardButtonCallback
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
-from ..core.status.status import ARTask
 from functools import partial
 
 # referenced from public leech
@@ -34,8 +32,8 @@ async def aria_start():
         stderr=asyncio.subprocess.PIPE
     )
     stdout, stderr = await process.communicate()
-    torlog.debug(stdout)
-    torlog.debug(stderr)
+    print(stdout)
+    print(stderr)
     arcli = await aloop.run_in_executor(None, partial(aria2p.Client, host="http://localhost", port=8100, secret=""))
     aria2 = await aloop.run_in_executor(None, aria2p.API, arcli)
 
@@ -46,8 +44,7 @@ async def add_magnet(aria_instance, magnetic_link, c_file_name):
         download = await aloop.run_in_executor(None, aria_instance.add_magnet, magnetic_link)
     except Exception as e:
         return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /help"
-    else:
-        return True, "" + download.gid + ""
+    return True, "" + download.gid + ""
 
 
 async def add_torrent(aria_instance, torrent_file_path):
@@ -61,8 +58,7 @@ async def add_torrent(aria_instance, torrent_file_path):
 
         except Exception as e:
             return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /help"
-        else:
-            return True, "" + download.gid + ""
+        return True, "" + download.gid + ""
     else:
         return False, "**FAILED** \n" + str(e) + " \nPlease try other sources to get workable link"
 
@@ -76,8 +72,7 @@ async def add_url(aria_instance, text_url, c_file_name):
 
     except Exception as e:
         return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links. Read /help"
-    else:
-        return True, "" + download.gid + ""
+    return True, "" + download.gid + ""
 
 async def check_metadata(aria2, gid):
     file = await aloop.run_in_executor(None, aria2.get_download, gid)
@@ -86,132 +81,6 @@ async def check_metadata(aria2, gid):
     new_gid = file.followed_by_ids[0]
     print("Changing GID " + gid + " to " + new_gid)
     return new_gid
-
-async def aria_dl(
-    incoming_link,
-    c_file_name,
-    sent_message_to_update_tg_p,
-    user_msg
-):
-    aria_instance = await aria_start()
-    
-    ar_task = ARTask(None, sent_message_to_update_tg_p, aria_instance, None)
-    await ar_task.set_original_mess()
-
-    if incoming_link.lower().startswith("magnet:"):
-        sagtus, err_message = await add_magnet(aria_instance, incoming_link, c_file_name)
-    elif incoming_link.lower().endswith(".torrent"):
-        #sagtus, err_message = await add_torrent(aria_instance, incoming_link)
-        #sagtus, err_message = await add_url(aria_instance, incoming_link, c_file_name)
-        await ar_task.set_inactive("Cant download this .torrent file")
-        return False, ar_task
-    else:
-        sagtus, err_message = await add_url(aria_instance, incoming_link, c_file_name)
-    if not sagtus:
-        await ar_task.set_inactive(err_message)
-        return sagtus, ar_task
-        
-    torlog.info(err_message)
-
-    await ar_task.set_gid(err_message)
-
-    op = await check_progress_for_dl(
-        aria_instance,
-        err_message,
-        sent_message_to_update_tg_p,
-        None,
-        ar_task,
-        user_msg=user_msg
-    )
-    if incoming_link.startswith("magnet:"):
-        #
-        err_message = await check_metadata(aria_instance, err_message)
-        #
-        await asyncio.sleep(1)
-        if err_message is not None:
-            op = await check_progress_for_dl(
-                aria_instance,
-                err_message,
-                sent_message_to_update_tg_p,
-                None,
-                ar_task,
-                user_msg=user_msg
-            )
-        else:
-            await ar_task.set_inactive("Can't get metadata.\n")
-            return False, ar_task
-    await asyncio.sleep(1)
-    
-    if op is None:
-        await ar_task.set_inactive("Known error. Nothing wrong here. You didnt follow instructions.")
-        return False, ar_task
-    else:
-        statusr, stmsg = op
-        if statusr:
-            file = await aloop.run_in_executor(None, aria_instance.get_download,err_message)
-            to_upload_file = file.name
-            await ar_task.set_path(to_upload_file)
-            await ar_task.set_done()
-            return True, ar_task
-        else:
-            await ar_task.set_inactive(stmsg)
-            return False, ar_task
-
-async def check_progress_for_dl(aria2, gid, event, previous_message, task, rdepth = 0, user_msg=None):
-    try:
-        file = await aloop.run_in_executor(None, aria2.get_download, gid)
-        complete = file.is_complete
-        if not complete:
-            if not file.error_message:
-                msg = ""
-                
-                mem_chk = [68, 89, 78, 79]
-                memstr=""
-                for i in mem_chk:
-                    memstr += chr(i)
-                if os.environ.get(memstr, False):
-                    return
-                
-                await task.refresh_info(file)
-                await task.update_message()
-
-                
-            else:
-                msg = file.error_message
-                await event.edit(f"`{msg}`",parse_mode="html", buttons=None)
-                print(f"The aria download faild due to this reason:- {msg}")
-                return False, f"The aria download faild due to this reason:- {msg}"
-            await asyncio.sleep(get_val("EDIT_SLEEP_SECS"))
-           
-            return await check_progress_for_dl(
-                aria2, gid, event, previous_message, task, user_msg=user_msg
-            )
-        else:
-            await event.edit(f"Download completed: `{file.name}` - (`{file.total_length_string()}`)", buttons=None)
-            return True, "Download Complete"
-    except aria2p.client.ClientException as e:
-        if " not found" in str(e) or "'file'" in str(e):
-            fname = "N/A"
-            try:
-                fname = file.name
-            except:pass
-            task.cancel = True
-            await task.set_inactive()
-            return False, f"The Download was canceled. {fname}"
-        else:
-            torlog.warning("Errored due to ta client error.")
-        pass
-    except MessageNotModifiedError:
-        pass
-    except RecursionError:
-        file.remove(force=True)
-        return False, "The link is basically dead."
-    except Exception as e:
-        if " not found" in str(e) or "'file'" in str(e):
-            return False, "The Download was canceled."
-        else:
-            print(e)
-            return False, f"Error: {str(e)}"
 
 async def remove_dl(gid):
     aria2 = await aria_start()
