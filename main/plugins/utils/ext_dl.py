@@ -1,5 +1,7 @@
 # (c) MaheshChauhan
-# @DroneBots; Github.com/vasusen-code
+# Github.com/vasusen-code
+
+from zippyshare_downloader import extract_info, extract_info_coro
 
 #download from mediafire
 def mfdl(url):
@@ -15,3 +17,8 @@ def mega_dl(url):
     m.download_url(url, path) 
     file = (os.listdir(path))[0]
     return str(path + '/' + file)
+
+def zippy_dl(url):
+    # by default, parameter download is True
+    file = extract_info(url, download=True)
+    return file
