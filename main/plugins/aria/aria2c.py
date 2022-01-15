@@ -8,7 +8,7 @@ import aria2p, os, math, subprocess, asyncio
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
 
 from main.plugins.utils.utils import upload_file
-from .aria2c_conf import conf, track
+from .aria2c_conf import conf
 
 def humanbytes(size: float) -> str:
     """ humanize size """
@@ -22,21 +22,9 @@ def humanbytes(size: float) -> str:
         t_n += 1
     return "{:.2f} {}B".format(size, power_dict[t_n])
 
-async def aria_start():
-    
-    trackers = [f'{curl}']
-    cmd = conf.split()
-    cmd.append(f"--bt-tracker={trackers}")
-    print('starting aria2')
-    process = await asyncio.create_subprocess_exec(
-        *cmd,
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-    )
-    stdout, stderr = await process.communicate()
-    print(stdout.decode().strip())
-    print(stderr.decode().strip())
-     
+os.system(conf)
+
+def aria_start():  
     aria2 = aria2p.API(
         aria2p.Client(host="http://localhost", port=6800, secret="")
     )
@@ -47,8 +35,14 @@ def add_magnet(aria2, magnet_link):
         download = aria2.add_magnet(magnet_link, options=None)
         return True, download.gid
     except Exception as e:
-        return False, "**FAILED** \n" + str(e) + " \nPlease do not send SLOW links."
-      
+        return False, "**FAILED** \n" + 'ERROR:' + str(e) + " \nPlease do not send SLOW links."
+
+async def check_metadata(gid):
+	file = aria2.get_download(gid)
+	new_gid = file.followed_by_ids[0]
+    print("Changing GID "+gid+" to "+new_gid)
+	return new_gid	   
+
 async def check_progress_for_dl(aria2, gid, event, edit, previous): 
     complete = False
     while not complete:
