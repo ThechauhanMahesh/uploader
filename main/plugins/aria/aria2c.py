@@ -37,11 +37,14 @@ def add_magnet(aria2, magnet_link):
     except Exception as e:
         return False, "**FAILED** \n" + 'ERROR:' + str(e) + " \nPlease do not send SLOW links."
 
-def check_metadata(aria2, gid):
+def get_gid(aria2, gid):
     file = aria2.get_download(gid)
-    new_gid = file.followed_by_ids[0]
-    print("Changing GID "+gid+" to "+new_gid)
-    return new_gid
+    if file.followed_by_ids[0]:
+        new_gid = file.followed_by_ids[0]
+        print("Changing GID "+gid+" to "+new_gid)
+        return new_gid
+    else:
+        return gid
 
 async def check_progress_for_dl(aria2, gid, event, edit, previous): 
     complete = False
@@ -78,7 +81,7 @@ async def check_progress_for_dl(aria2, gid, event, edit, previous):
                     previous = msg
             else:
                 if complete:
-                    await upload_file(Path(t_file.name), event, edit) 
+                    await upload_file(Path(str(t_file.name)), event, edit) 
         except aria2p.client.ClientException as e:
             if " not found" in str(e) or "'file'" in str(e):
                 return edit.edit(f"The Download was canceled.")
