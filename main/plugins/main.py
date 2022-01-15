@@ -39,7 +39,9 @@ async def check_timer(event, list1, list2):
         last = list2[int(index)]
         present = time.time()
         return False, f"You have to wait {120-round(present-float(last))} seconds more to start a new process!"
-
+    else:
+        return True, None
+    
 #Callbacks-------------------------------------------------------------------------------------------------------------------------------------------
     
 @Drone.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
