@@ -174,6 +174,7 @@ async def magnet(event):
     await check_timer(event, process1, timer) 
     button = await event.get_message()
     msg = await button.get_reply_message() 
+    await event.delete()
     edit = await event.client.send_message(event.chat_id, "Trying to process.", reply_to=msg.id)
     aria2 = aria_start()
     status, o = add_magnet(aria2, msg.text)
