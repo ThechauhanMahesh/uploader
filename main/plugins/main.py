@@ -173,13 +173,20 @@ async def magnet(event):
     edit = await event.client.send_message(event.chat_id, "Trying to process.", reply_to=msg.id)
     aria2 = aria_start()
     status, o = add_magnet(aria2, msg.text)
-    if status is True:
-        gid = get_gid(aria2, o)
-        await check_progress_for_dl(aria2, gid, event, edit, "")
+    if status == False:
+        return await edit.edit(o)
+    x, y = await check_progress_for_dl(aria2, o, event, edit, "")
+    if x == True:
+        file = aria2.get_download(o)
+        if file.followed_by_ids:
+            new_gid = get_new_gid(aria2, o) 
+            a,  b = await check_progress_for_dl(aria2, new_gid, event, edit, "")
+            if a == True:
+                await upload_file(b, event, edit)
+            else:
+                return await edit.edit(b)
+        else:
+            await upload_file(y, event, edit) 
     else:
-        return edit.edit(o)
-    
-    
-    
-    
+        return await edit.edit(y)
     
