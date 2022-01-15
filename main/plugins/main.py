@@ -44,14 +44,14 @@ async def check_timer(event, list1, list2):
     
 @Drone.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def u(event):
+    yy = await force_sub(event.sender_id)
+    if yy is True:
+        return await event.reply(forcesubtext)
     if (str(event.text)).lower().startswith("magnet:"):
         return await upload_button(event, 'magnet') 
     link = get_link(event.text)
     if not link:
         return 
-    yy = await force_sub(event.sender_id)
-    if yy is True:
-        return await event.reply(forcesubtext)
     if 'drive.google.com' in link: 
         await upload_button(event, 'drive') 
     elif 'playlist' in link:
