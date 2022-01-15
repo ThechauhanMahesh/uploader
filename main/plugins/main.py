@@ -176,7 +176,7 @@ async def magnet(event):
     if status is True:
         await check_progress_for_dl(aria2, o, event, edit, "")
         await asyncio.sleep(5)
-        new_gid = check_metadata(o)
+        new_gid = check_metadata(aria2, o)
         await check_progress_for_dl(aria2, new_gid, event, edit, "")
     else:
         return edit.edit(o)
