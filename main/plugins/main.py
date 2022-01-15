@@ -10,7 +10,7 @@ from telethon import events, Button
 from main.plugins.gdown import drive
 from main.plugins.utils.ext_dl import mega_dl, mfdl
 from ethon.uploader import weburl, ytdl, download_from_youtube
-from main.plugins.aria.aria2c import aria_start, add_magnet, check_progress_for_dl, get_gid
+from main.plugins.aria.aria2c import aria_start, add_magnet, check_progress_for_dl, get_new_gid
 from main.plugins.utils.utils import get_link, upload_file, force_sub, upload_as_file
 from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
 
