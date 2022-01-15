@@ -38,7 +38,7 @@ async def check_timer(event, list1, list2):
         index = list1.index(f'{event.sender_id}')
         last = list2[int(index)]
         present = time.time()
-        return await event.answer(f"You have to wait {120-round(present-float(last))} seconds more to start a new process!", alert=True)
+        return False, f"You have to wait {120-round(present-float(last))} seconds more to start a new process!"
 
 #Callbacks-------------------------------------------------------------------------------------------------------------------------------------------
     
@@ -71,7 +71,9 @@ async def u(event):
         
 @Drone.on(events.callbackquery.CallbackQuery(data="drive"))
 async def d(event):
-    await check_timer(event, process1, timer) 
+    s, t = await check_timer(event, process1, timer) 
+    if s == False:
+        return await event.answer(t, alert=True)
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
@@ -80,7 +82,9 @@ async def d(event):
     
 @Drone.on(events.callbackquery.CallbackQuery(data="yt"))
 async def yt(event):
-    await check_timer(event, process1, timer) 
+    s, t = await check_timer(event, process1, timer) 
+    if s == False:
+        return await event.answer(t, alert=True)
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
@@ -99,7 +103,9 @@ async def yt(event):
     
 @Drone.on(events.callbackquery.CallbackQuery(data="mega"))
 async def m(event):
-    await check_timer(event, process1, timer) 
+    s, t = await check_timer(event, process1, timer) 
+    if s == False:
+        return await event.answer(t, alert=True)
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
@@ -118,7 +124,9 @@ async def m(event):
     
 @Drone.on(events.callbackquery.CallbackQuery(data="mf"))
 async def mf(event):
-    await check_timer(event, process1, timer) 
+    s, t = await check_timer(event, process1, timer) 
+    if s == False:
+        return await event.answer(t, alert=True)
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
@@ -137,7 +145,9 @@ async def mf(event):
     
 @Drone.on(events.callbackquery.CallbackQuery(data="upload"))
 async def u(event):
-    await check_timer(event, process1, timer) 
+    s, t = await check_timer(event, process1, timer) 
+    if s == False:
+        return await event.answer(t, alert=True)
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
@@ -171,7 +181,9 @@ async def u(event):
         
 @Drone.on(events.callbackquery.CallbackQuery(data="magnet"))
 async def magnet(event):
-    await check_timer(event, process1, timer) 
+    s, t = await check_timer(event, process1, timer) 
+    if s == False:
+        return await event.answer(t, alert=True)
     button = await event.get_message()
     msg = await button.get_reply_message() 
     await event.delete()
