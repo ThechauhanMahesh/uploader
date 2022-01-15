@@ -36,8 +36,7 @@ async def aria_start():
     stdout, stderr = await process.communicate()
     print(stdout.decode().strip())
     print(stderr.decode().strip())
-    await event.client.send_message(chat, f'o : {o}; e : {e}')
-    
+     
     aria2 = aria2p.API(
         aria2p.Client(host="http://localhost", port=6800, secret="")
     )
