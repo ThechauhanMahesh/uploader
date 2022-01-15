@@ -44,6 +44,8 @@ async def check_timer(event, list1, list2):
     
 @Drone.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def u(event):
+    if (str(event.text)).lower().startswith("magnet:"):
+        return await upload_button(event, 'magnet') 
     link = get_link(event.text)
     if not link:
         return 
@@ -167,10 +169,11 @@ async def u(event):
     await upload_file(file, event, edit) 
     await set_timer(event, process1, timer) 
         
-@Drone.on(events.NewMessage(incoming=True, pattern="/magnet"))
+@Drone.on(events.callbackquery.CallbackQuery(data="magnet"))
 async def magnet(event):
     await check_timer(event, process1, timer) 
-    msg = await event.get_reply_message() 
+    button = await event.get_message()
+    msg = await button.get_reply_message() 
     edit = await event.client.send_message(event.chat_id, "Trying to process.", reply_to=msg.id)
     aria2 = aria_start()
     status, o = add_magnet(aria2, msg.text)
