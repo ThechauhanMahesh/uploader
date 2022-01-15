@@ -37,30 +37,26 @@ def add_magnet(aria2, magnet_link):
     except Exception as e:
         return False, "**FAILED** \n" + 'ERROR:' + str(e) + " \nPlease do not send SLOW links."
 
-def get_gid(aria2, gid):
+def get_new_gid(aria2, gid):
     file = aria2.get_download(gid)
-    if file.followed_by_ids[0]:
-        new_gid = file.followed_by_ids[0]
-        print("Changing GID "+gid+" to "+new_gid)
-        return new_gid
-    else:
-        return gid
-
+    new_gid = file.followed_by_ids[0]
+    print("Changing GID "+gid+" to "+new_gid)
+    return new_gid
+    
 async def check_progress_for_dl(aria2, gid, event, edit, previous): 
     complete = False
     while not complete:
         try:
             t_file = aria2.get_download(gid)
         except:
-            return await edit.edit("Download cancelled by user.")
+            return False , "Download cancelled by user."
         complete = t_file.is_complete
         try:
             if t_file.error_message:
-                await edit.edit(str(t_file.error_message))
-                return
+                return False, str(t_file.error_message)
             if not complete and not t_file.error_message:
                 if t_file.has_failed:
-                    return await edit.edit("Download cancelled!\n\nstatus- **FAILED**")
+                    return False, "Download cancelled!\n\nstatus- **FAILED**"
                 percentage = int(t_file.progress)
                 downloaded = percentage * int(t_file.total_length) / 100
                 prog_str = "**DOWNLOADING FILE:**\n\n**[{0}] |** `{1}`".format(
@@ -81,23 +77,24 @@ async def check_progress_for_dl(aria2, gid, event, edit, previous):
                     previous = msg
             else:
                 if complete:
-                    await upload_file(Path(str(t_file.name)), event, edit) 
+                    return True, Path(str(t_file.name))
+                
         except aria2p.client.ClientException as e:
             if " not found" in str(e) or "'file'" in str(e):
-                return edit.edit(f"The Download was canceled.")
+                return False, "The Download was canceled."
             else:
-                await edit.edit("Errored due to ta client error.")
+                await False, "Errored due to ta client error."
             pass
         except MessageNotModifiedError:
             pass
         except RecursionError:
             t_file.remove(force=True)
-            return edit.edit("The link is dead.")
+            return False, "The link is dead."
         except Exception as e:
             print(str(e))
             if "not found" in str(e) or "'file'" in str(e):
-                return await edit.edit("The Download was canceled.")
+                return False, "The Download was canceled."
             else:
                 print(str(e))
-                return edit.edit(f"Error: {str(e)}")
+                return False, f"Error: {str(e)}"
         
