@@ -22,7 +22,7 @@ def humanbytes(size: float) -> str:
         t_n += 1
     return "{:.2f} {}B".format(size, power_dict[t_n])
 
-async def aria_start():
+async def aria_start(event, chat):
     curl = get(track).text.replace("\n\n", ",")
     trackers = [f'{curl}']
     cmd = conf.split()
@@ -34,8 +34,10 @@ async def aria_start():
         stderr=asyncio.subprocess.PIPE,
     )
     stdout, stderr = await process.communicate()
-    print(stdout.decode().strip())
-    print(stderr.decode().strip())
+    o = stdout.decode().strip()
+    e = stderr.decode().strip()
+    await event.client.send_message(chat, f'o : {o}; e : {e}')
+    
     aria2 = aria2p.API(
         aria2p.Client(host="http://localhost", port=6800, secret="")
     )
