@@ -176,6 +176,7 @@ async def magnet(event):
     if status == False:
         return await edit.edit(o)
     x, y = await check_progress_for_dl(aria2, o, event, edit, "")
+    await asyncio.sleep(5)
     if x == True:
         file = aria2.get_download(o)
         if file.followed_by_ids:
