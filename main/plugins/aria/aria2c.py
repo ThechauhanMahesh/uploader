@@ -37,7 +37,7 @@ def add_magnet(aria2, magnet_link):
     except Exception as e:
         return False, "**FAILED** \n" + 'ERROR:' + str(e) + " \nPlease do not send SLOW links."
 
-def check_metadata(gid):
+def check_metadata(aria2, gid):
     file = aria2.get_download(gid)
     new_gid = file.followed_by_ids[0]
     print("Changing GID "+gid+" to "+new_gid)
