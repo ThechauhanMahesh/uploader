@@ -169,6 +169,7 @@ async def u(event):
         
 @Drone.on(events.NewMessage(incoming=True, pattern="/magnet"))
 async def magnet(event):
+    await check_timer(event, process1, timer) 
     msg = await event.get_reply_message() 
     edit = await event.client.send_message(event.chat_id, "Trying to process.", reply_to=msg.id)
     aria2 = aria_start()
@@ -191,4 +192,5 @@ async def magnet(event):
             await upload_file(y, event, edit) 
     else:
         return await edit.edit(y)
+    await set_timer(event, process1, timer) 
     
