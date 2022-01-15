@@ -23,7 +23,7 @@ def humanbytes(size: float) -> str:
     return "{:.2f} {}B".format(size, power_dict[t_n])
 
 async def aria_start():
-    curl = get(track).text.replace("\n\n", ",")
+    
     trackers = [f'{curl}']
     cmd = conf.split()
     cmd.append(f"--bt-tracker={trackers}")
