@@ -74,7 +74,9 @@ async def check_progress_for_dl(aria2, gid, event, edit, previous):
                     previous = msg
             else:
                 if complete:
-                    return True, str(Path(str(t_file.name)))
+                    if os.path.isdir(str(Path(str(t_file.name)))):
+                    else:
+                        return True, str(Path(str(t_file.name)))
                 
         except aria2p.client.ClientException as e:
             if " not found" in str(e) or "'file'" in str(e):
