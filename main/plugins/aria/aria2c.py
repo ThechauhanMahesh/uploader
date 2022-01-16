@@ -8,7 +8,6 @@ import aria2p, os, math, subprocess, asyncio
 from telethon.errors.rpcerrorlist import MessageNotModifiedError
 
 from main.plugins.utils.utils import upload_file
-from .aria2c_conf import conf
 
 def humanbytes(size: float) -> str:
     """ humanize size """
