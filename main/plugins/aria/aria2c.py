@@ -22,8 +22,6 @@ def humanbytes(size: float) -> str:
         t_n += 1
     return "{:.2f} {}B".format(size, power_dict[t_n])
 
-os.system(conf)
-
 def aria_start():  
     aria2 = aria2p.API(
         aria2p.Client(host="http://localhost", port=6800, secret="")
