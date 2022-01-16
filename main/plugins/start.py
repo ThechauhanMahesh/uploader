@@ -59,17 +59,18 @@ async def sett(event):
         xx = await conv.send_message("Send me any image for thumbnail as a `reply` to this message.")
         try:
             x = await conv.get_reply()
+            if not x.media:
+                return await xx.edit("No media found.")
+            mime = x.file.mime_type
+            if not 'png' in mime:
+                if not 'jpg' in mime:
+                    if not 'jpeg' in mime:
+                        return await xx.edit("No image found.")
+            await set_thumbnail(event, x.media)
+            await xx.delete()
         except Exception:
             await xx.edit("An error occured while waiting for the response.")
-        if not x.media:
-            await xx.edit("No media found.")
-        mime = x.file.mime_type
-        if not 'png' in mime:
-            if not 'jpg' in mime:
-                if not 'jpeg' in mime:
-                    return await xx.edit("No image found.")
-        await set_thumbnail(event, x.media)
-        await xx.delete()
+        
         
 @Drone.on(events.callbackquery.CallbackQuery(data="remt"))
 async def remt(event):  
