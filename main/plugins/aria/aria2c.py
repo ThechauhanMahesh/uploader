@@ -75,6 +75,7 @@ async def check_progress_for_dl(aria2, gid, event, edit, previous):
             else:
                 if complete:
                     if os.path.isdir(str(Path(str(t_file.name)))):
+                        return True, os.listdir(str(Path(str(t_file.name))))
                     else:
                         return True, str(Path(str(t_file.name)))
                 
