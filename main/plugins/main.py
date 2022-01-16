@@ -10,9 +10,9 @@ from telethon import events, Button
 from main.plugins.gdown import drive
 from main.plugins.utils.ext_dl import mega_dl, mfdl
 from ethon.uploader import weburl, ytdl, download_from_youtube
-from main.plugins.aria.aria2c import aria_start, add_magnet, check_progress_for_dl, get_new_gid
 from main.plugins.utils.utils import get_link, upload_file, force_sub, upload_as_file
 from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
+from main.plugins.aria.aria2c import aria_start, add_magnet, check_progress_for_dl, get_new_gid, add_uris
 
 process1 = []
 timer = []
@@ -219,4 +219,41 @@ async def magnet(event):
     else:
         return await edit.edit(y)
     await set_timer(event, process1, timer) 
+    
+@Drone.on(events.NewMessage(incoming=True, pattern="/uri"))
+async def uri(event):
+    msg = await event.get_reply_message()
+    edit = await event.client.send_message(event.chat_id, 'Trying to process', reply_to=msg.id)
+    aria2 = aria_start()
+    status, o = add_uris(aria2, msg.text)
+    if status == False:
+        return await edit.edit(o)
+    x, y = await check_progress_for_dl(aria2, o, event, edit, "")
+    await edit.edit("`Processing metadata...`")
+    await asyncio.sleep(5)
+    if x == True:
+        file = aria2.get_download(o)
+        if file.followed_by_ids:
+            new_gid = get_new_gid(aria2, o) 
+            a,  b = await check_progress_for_dl(aria2, new_gid, event, edit, "")
+            if a == True:
+                if isinstance(a_list, b):
+                    for x in b:
+                        await upload_file(x, event, edit)
+                else:
+                    await upload_file(b, event, edit)
+            else:
+                return await edit.edit(b)
+        else:
+            if isinstance(a_list, y):
+                for x in y:
+                    await upload_file(x, event, edit) 
+            else:
+                await upload_file(y, event, edit) 
+    else:
+        return await edit.edit(y)
+    
+    
+    
+    
     
