@@ -203,11 +203,19 @@ async def magnet(event):
             new_gid = get_new_gid(aria2, o) 
             a,  b = await check_progress_for_dl(aria2, new_gid, event, edit, "")
             if a == True:
-                await upload_file(b, event, edit)
+                if isinstance(a_list, b):
+                    for x in b:
+                        await upload_file(x, event, edit)
+                else:
+                    await upload_file(b, event, edit)
             else:
                 return await edit.edit(b)
         else:
-            await upload_file(y, event, edit) 
+            if isinstance(a_list, y):
+                for x in y:
+                    await upload_file(x, event, edit) 
+            else:
+                await upload_file(y, event, edit) 
     else:
         return await edit.edit(y)
     await set_timer(event, process1, timer) 
