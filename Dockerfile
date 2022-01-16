@@ -1,15 +1,22 @@
-FROM ubuntu:20.04
-ENV DEBIAN_FRONTEND=noninteractive
-ENV TZ=Asia/Kolkata
+FROM python:3.9
 
-RUN mkdir ./app
+RUN chmod 777 /app
 WORKDIR /app
 
 RUN apt -qq update --fix-missing
 RUN apt -qq install -y git \
+    aria2 \
     python3 \
     python3-pip \
-    aria2  
+    wget \
+    curl
+    
+COPY requirements.txt .
+RUN pip3 install --no-cache-dir -r requirements.txt
+
 COPY . .
-RUN pip3 install -r requirements.txt
+COPY .netrc /root/.netrc
+RUN chmod 600 /app/.netrc
+RUN chmod +x ./main/plugins/aria/aria2c.sh
+
 CMD ["bash","start.sh"]
