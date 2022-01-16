@@ -1,5 +1,5 @@
-#tg:ChauhanMahesh/DroneBots
-#github.com/vasusen-code
+# (c) Mahesh Chauhan
+# Github.com/Vasusen-code
 
 from pathlib import Path
 from requests import get
