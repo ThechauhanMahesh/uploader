@@ -48,8 +48,8 @@ async def check_progress_for_dl(aria2, gid, event, edit, previous):
     while not complete:
         try:
             t_file = aria2.get_download(gid)
-        except:
-            return False , "Download cancelled by user."
+        except Exception as e:
+            return False , f"Error: `{e}`"
         complete = t_file.is_complete
         try:
             if t_file.error_message:
