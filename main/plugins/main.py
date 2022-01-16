@@ -203,7 +203,7 @@ async def magnet(event):
             new_gid = get_new_gid(aria2, o) 
             a,  b = await check_progress_for_dl(aria2, new_gid, event, edit, "")
             if a == True:
-                if isinstance(a_list, b):
+                if type(b) == list:
                     for x in b:
                         await upload_file(x, event, edit)
                 else:
@@ -211,7 +211,7 @@ async def magnet(event):
             else:
                 return await edit.edit(b)
         else:
-            if isinstance(a_list, y):
+            if type(y) == list:
                 for x in y:
                     await upload_file(x, event, edit) 
             else:
@@ -237,7 +237,7 @@ async def uri(event):
             new_gid = get_new_gid(aria2, o) 
             a,  b = await check_progress_for_dl(aria2, new_gid, event, edit, "")
             if a == True:
-                if isinstance(a_list, b):
+                if type(b) == list:
                     for x in b:
                         await upload_file(x, event, edit)
                 else:
@@ -245,7 +245,7 @@ async def uri(event):
             else:
                 return await edit.edit(b)
         else:
-            if isinstance(a_list, y):
+            if type(y) == list:
                 for x in y:
                     await upload_file(x, event, edit) 
             else:
