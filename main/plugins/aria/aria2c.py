@@ -66,7 +66,7 @@ async def check_progress_for_dl(aria2, gid, event, edit, previous):
                 prog_str = "**DOWNLOADING FILE:**\n\n**[{0}] |** `{1}`".format(
                     "".join(
                         "█"
-                        for i in range(math.floor(percentage / 20))
+                        for i in range(math.floor(percentage / 10))
                     ),
                     t_file.progress_string(),
                 )
