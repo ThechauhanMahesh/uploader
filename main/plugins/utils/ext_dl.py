@@ -2,6 +2,7 @@
 # Github.com/vasusen-code
 
 from mega import Mega
+from pathlib import Path
 import os, asyncio, heroku3, mediafire_dl
 from datetime import datetime as dt
 from telethon import events
@@ -19,11 +20,8 @@ def mfdl(url, id):
 #download mega files
 def mega_dl(url):
     m = Mega().login()
-    path = f'./{dt.now().isoformat("_", "seconds")}/'
-    os.mkdir(path)
-    m.download_url(url, path) 
-    file = (os.listdir(path))[0]
-    return str(path + '/' + file)
+    file = m.download_url(url) 
+    return str(Path(str(file)))
 
 #Progress for ext-dl and gdown--------------------------------------------------------------------------------------------------
 
