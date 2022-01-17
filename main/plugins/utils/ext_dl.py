@@ -29,11 +29,8 @@ def mega_dl(url):
 
 #Progress for ext-dl and gdown--------------------------------------------------------------------------------------------------
 
-   """
-   This is the worst but easiest way someone could get a progress bar 
-   for progress made by third party packages. 
-   lmao, i don't i should cry or be happy.
-   """
+""" This is the worst way someone could get a progress bar 
+   for progress made by third party packages. """
 
 
 def get_progress(proc):
