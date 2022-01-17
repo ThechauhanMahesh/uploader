@@ -1,9 +1,12 @@
 # (c) MaheshChauhan
 # Github.com/vasusen-code
 
+import heroku3
 from mega import Mega
 import mediafire_dl
 from datetime import datetime as dt
+
+#Downloaders-------------------------------------------------------------------------------------------------------------
 
 #download from mediafire
 def mfdl(url, id):
@@ -19,3 +22,29 @@ def mega_dl(url):
     m.download_url(url, path) 
     file = (os.listdir(path))[0]
     return str(path + '/' + file)
+
+#Progress for ext-dl and gdown--------------------------------------------------------------------------------------------------
+
+   """
+   This is the worst but easiest way someone could get a progress bar 
+   for progress made by third party packages. 
+   lmao, i don't i should cry or be happy.
+   """
+
+app = (heroku3.from_key(HEROKU_API)).app(HEROKU_APP_NAME)
+
+def get_progress:
+    a = []
+    lines = str(app.get_log()).split(f"{proc}:")
+    for line in lines:
+        a.append(line)
+     
+    data =  (str(a.pop(-1))).split("]")[0] 
+    
+    progress = data.split("|")[1] + "|" + data.split("|")[0]
+    gross = (str(data.split("|")[2])).split("[")[0]
+    speed =(str(data.split(",")[1])).split("]")[0]
+
+    msg = f"**DOWNLOADING FILE:**\n\n**{progress}**\n\nGROSS: {gross}\n\nSPEED: {speed}\n\nETA: N/A"
+    
+    return msg
