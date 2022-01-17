@@ -11,6 +11,7 @@ from main.plugins.gdown import drive
 from main.plugins.utils.ext_dl import mega_dl, mfdl
 from ethon.uploader import weburl, ytdl, download_from_youtube
 from main.plugins.utils.utils import get_link, upload_file, force_sub, upload_as_file
+from main.plugins.utils.ext_dl import get_progress
 from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
 from main.plugins.aria.aria2c import aria_start, add_magnet, check_progress_for_dl, get_new_gid
 
@@ -132,18 +133,20 @@ async def mf(event):
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
-    ds = await Drone.send_message(event.chat_id, file=down_sticker, reply_to=msg.id)
-    edit = await Drone.send_message(event.chat_id, '**DOWNLOADING**', reply_to=msg.id)
+    edit = await Drone.send_message(event.chat_id, '**DOWNLOADING**', reply_to=msg.id, buttons=[[Button.inline("STATUS.", data="mfstatus")]])
     file = None
     try:
         link = get_link(msg.text)
         file = mfdl(link, event.sender_id)
     except Exception as e:
-        await ds.delete()
         return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})")
-    await ds.delete()
     await upload_as_file(file, event, edit) 
     await set_timer(event, process1, timer) 
+ 
+@Drone.on(events.callbackquery.CallbackQuery(data="mfstatus"))
+async def mfstatus(event):
+    st = get_progress(f'M-Fire DOWN for {event.sender_id}')
+    await event.answer(st, alert=True)
     
 @Drone.on(events.callbackquery.CallbackQuery(data="upload"))
 async def u(event):
