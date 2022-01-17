@@ -18,7 +18,7 @@ from main.plugins.utils.utils import get_link, upload_folder
 #to upload files from drive folder 
 #returns downloaded files path as a list
 def drive_folder_download(url):
-    output = gdown.download_folder(url, quiet=True)
+    output = gdown.download_folder(url, quiet=False)
     return output
 
 #makes error handling handy
@@ -62,7 +62,7 @@ async def drive(event, msg):
         id = (link.split("/"))[5]
         _link = f'https://drive.google.com/uc?id={id}'
         try:
-            file = gdown.download(_link, quiet=True)
+            file = gdown.download(_link, quiet=False)
         except Exception as e:
             await ds.delete()
             print(e)
@@ -70,7 +70,7 @@ async def drive(event, msg):
         folder.append(file)
     elif 'https://drive.google.com/uc?id=' in link:
         try:
-            file = gdown.download(link, quiet=True)
+            file = gdown.download(link, quiet=False)
         except Exception as e:
             print(e)
             await ds.delete()
@@ -79,7 +79,7 @@ async def drive(event, msg):
     elif 'id=' in link:
         try:
             link_ = f'https://drive.google.com/uc?id={(link.split("id="))[1]}'
-            file = gdown.download(link_, quiet=True)
+            file = gdown.download(link_, quiet=False)
         except Exception as e:
             print(e)
             await ds.delete()
