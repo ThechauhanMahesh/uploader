@@ -46,7 +46,7 @@ def get_progress(proc):
     gross = (str(data.split("|")[2])).split("[")[0]
     speed =(str(data.split(",")[1])).split("]")[0]
 
-    msg = f"**DOWNLOADING FILE:**\n\n**{progress}**\n\nGROSS: {gross}\n\nSPEED: {speed}\n\nETA: N/A"
+    msg = f"{progress}\n\nGROSS: {gross}\n\nSPEED: {speed}"
     
     return msg
 
