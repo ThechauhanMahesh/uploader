@@ -5,9 +5,9 @@ from mega import Mega
 import mediafire_dl
 
 #download from mediafire
-def mfdl(url):
+def mfdl(url, id):
     output = url.split("/")[-1]
-    mediafire_dl.download(url, output, quiet=False)
+    mediafire_dl.download(url, output, sender_id=id, quiet=False)
     return output
 
 #download mega files
