@@ -39,7 +39,7 @@ async def drive(event, msg):
             print(e)
             return await error(edit, e, 'downloading')
         if output is None:
-            return await edit.edit("Could not Download!")
+            return await edit.edit("Could not Download!", buttons=None)
         index = len(output)
         for i in range(int(index)):
             folder.append((output)[i])
