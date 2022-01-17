@@ -1,10 +1,8 @@
 # (c) MaheshChauhan
 # Github.com/vasusen-code
 
-import asyncio
-import heroku3
 from mega import Mega
-import mediafire_dl
+import os, asyncio, heroku3, mediafire_dl
 from datetime import datetime as dt
 from telethon import events
 
@@ -36,7 +34,10 @@ def mega_dl(url):
 def get_progress(proc):
     a = []
     app = (heroku3.from_key(HEROKU_API)).app(HEROKU_APP_NAME)
-    lines = str(app.get_log()).split(f"{proc}:")
+    log = str(app.get_log())
+    if not f"{proc}:" in log:
+        return "The Progress isn't available yet, Try few seconds later."
+    lines = log.split(f"{proc}:")
     for line in lines:
         a.append(line)
      
