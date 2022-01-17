@@ -34,13 +34,6 @@ def add_magnet(aria2, magnet_link):
     except Exception as e:
         return False, "**FAILED** \n\n" + 'ERROR:' + str(e) + " \n\nPlease do not send SLOW links."
     
-def add_uris(aria2, uri):
-    try:
-        download = aria2.add_uris(uri, options=None)
-        return True, download.gid
-    except Exception as e:
-        return False, "**FAILED** \n\n" + 'ERROR:' + str(e) + " \n\nPlease do not send SLOW links."
-
 def get_new_gid(aria2, gid):
     file = aria2.get_download(gid)
     new_gid = file.followed_by_ids[0]
