@@ -1,7 +1,7 @@
 # (c) MaheshChauhan
 # Github.com/vasusen-code
 
-import asyncii
+import asyncio
 import heroku3
 from mega import Mega
 import mediafire_dl
