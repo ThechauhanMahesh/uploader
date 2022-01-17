@@ -53,8 +53,3 @@ def get_progress(proc):
     
     return msg
 
-async def progress_loop(edit, proc):
-    msg = get_progress(proc)
-    await edit.edit(msg)
-    await asyncio.sleep(2)
-    await progress_loop(edit, proc) 
