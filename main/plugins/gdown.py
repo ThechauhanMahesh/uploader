@@ -7,7 +7,7 @@ import time
 import gdown
 import asyncio
 from .. import Drone, BOT_UN
-from telethon import events
+from telethon import events, Button
 from datetime import datetime as dt
 from ethon.telefunc import fast_upload
 from ethon.pyfunc import bash
