@@ -6,8 +6,9 @@ import heroku3
 from mega import Mega
 import mediafire_dl
 from datetime import datetime as dt
-
 from telethon import events
+
+from ... import HEROKU_API, HEROKU_APP_NAME
 
 #Downloaders-------------------------------------------------------------------------------------------------------------
 
