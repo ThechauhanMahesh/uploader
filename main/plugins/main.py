@@ -140,7 +140,7 @@ async def mf(event):
         file = mfdl(link, event.sender_id)
     except Exception as e:
         return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})", buttons=None)
-    await edit.edit("Download complete.", Buttons=None)
+    await edit.edit("Download complete.", buttons=None)
     await upload_as_file(file, event, edit2) 
     await set_timer(event, process1, timer) 
  
