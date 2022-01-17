@@ -3,6 +3,7 @@
 
 from mega import Mega
 import mediafire_dl
+from datetime import datetime as dt
 
 #download from mediafire
 def mfdl(url, id):
@@ -11,7 +12,7 @@ def mfdl(url, id):
     return output
 
 #download mega files
-def mega_dl(url, path):
+def mega_dl(url):
     m = Mega().login()
     path = f'./{dt.now().isoformat("_", "seconds")}/'
     os.mkdir(path)
