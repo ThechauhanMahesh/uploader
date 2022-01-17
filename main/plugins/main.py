@@ -139,8 +139,9 @@ async def mf(event):
         link = get_link(msg.text)
         file = mfdl(link, event.sender_id)
     except Exception as e:
-        return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})")
-    await upload_as_file(file, event, edit) 
+        return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})", buttons=None)
+    await edit.edit("Download complete.", Buttons=None)
+    await upload_as_file(file, event, edit2) 
     await set_timer(event, process1, timer) 
  
 @Drone.on(events.callbackquery.CallbackQuery(data="mfstatus"))
