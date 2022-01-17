@@ -22,7 +22,7 @@ heroku3
 aria2p 
 mega.py 
 git+https://github.com/vasusen-code/mediafire-dl
-https://github.com/vasusen-code/gdown/archive/refs/tags/v1.1.0.tar.gz
+https://github.com/vasusen-code/gdown/archive/refs/tags/v1.1.2.tar.gz
 
 #helper
 ethon==1.2.7 
