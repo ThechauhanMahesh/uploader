@@ -62,7 +62,7 @@ async def drive(event, msg):
         id = (link.split("/"))[5]
         _link = f'https://drive.google.com/uc?id={id}'
         try:
-            file = gdown.download(_link, quiet=False)
+            file = gdown.download(_link, quiet=False, sender_id=event.sender_id)
         except Exception as e:
             await ds.delete()
             print(e)
@@ -70,7 +70,7 @@ async def drive(event, msg):
         folder.append(file)
     elif 'https://drive.google.com/uc?id=' in link:
         try:
-            file = gdown.download(link, quiet=False)
+            file = gdown.download(link, quiet=False, sender_id=event.sender_id)
         except Exception as e:
             print(e)
             await ds.delete()
@@ -79,7 +79,7 @@ async def drive(event, msg):
     elif 'id=' in link:
         try:
             link_ = f'https://drive.google.com/uc?id={(link.split("id="))[1]}'
-            file = gdown.download(link_, quiet=False)
+            file = gdown.download(link_, quiet=False, sender_id=event.sender_id)
         except Exception as e:
             print(e)
             await ds.delete()
