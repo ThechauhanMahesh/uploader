@@ -24,7 +24,7 @@ def drive_folder_download(url):
 
 #makes error handling handy
 async def error(event, error, ps):
-    return await event.edit(f"An error [`{error}`] occured while {ps}.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False)        
+    return await event.edit(f"An error [`{error}`] occured while {ps}.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False, buttons=None)      
 
 #download files frm drive
 async def drive(event, msg):
@@ -79,7 +79,8 @@ async def drive(event, msg):
             return await error(edit, e, 'downloading') 
         folder.append(file)
     else:
-        return await edit.edit(f'Link support not added.\n\ncontact [SUPPORT]({SUPPORT_LINK})', link_preview=False)
+        return await edit.edit(f'Link support not added.\n\ncontact [SUPPORT]({SUPPORT_LINK})', link_preview=False, buttons=None)
+    await edit.edit("Download complete.", buttons=None)
     await upload_folder(folder, event, edit) 
 
 @Drone.on(events.callbackquery.CallbackQuery(data="progress"))
