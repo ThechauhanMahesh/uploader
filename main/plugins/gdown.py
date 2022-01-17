@@ -82,3 +82,10 @@ async def drive(event, msg):
         return await edit.edit(f'Link support not added.\n\ncontact [SUPPORT]({SUPPORT_LINK})', link_preview=False)
     await upload_folder(folder, event, edit) 
 
+@Drone.on(events.callbackquery.CallbackQuery(data="progress"))
+async def status(event):
+    st = get_progress(f'GDRIVE FILE DOWN for {event.sender_id}')
+    await event.answer(st, alert=True)
+    
+    
+    
