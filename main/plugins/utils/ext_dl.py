@@ -1,10 +1,13 @@
 # (c) MaheshChauhan
 # Github.com/vasusen-code
 
+import asyncii
 import heroku3
 from mega import Mega
 import mediafire_dl
 from datetime import datetime as dt
+
+from telethon import events
 
 #Downloaders-------------------------------------------------------------------------------------------------------------
 
@@ -31,10 +34,10 @@ def mega_dl(url):
    lmao, i don't i should cry or be happy.
    """
 
-app = (heroku3.from_key(HEROKU_API)).app(HEROKU_APP_NAME)
 
-def get_progress:
+def get_progress(proc):
     a = []
+    app = (heroku3.from_key(HEROKU_API)).app(HEROKU_APP_NAME)
     lines = str(app.get_log()).split(f"{proc}:")
     for line in lines:
         a.append(line)
@@ -48,3 +51,9 @@ def get_progress:
     msg = f"**DOWNLOADING FILE:**\n\n**{progress}**\n\nGROSS: {gross}\n\nSPEED: {speed}\n\nETA: N/A"
     
     return msg
+
+async def progress_loop(edit, proc):
+    msg = get_progress(proc)
+    await edit.edit(msg)
+    await asyncio.sleep(2)
+    await progress_loop(edit, proc) 
