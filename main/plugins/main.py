@@ -137,7 +137,7 @@ async def mf(event):
     file = None
     try:
         link = get_link(msg.text)
-        file = mfdl(link)
+        file = mfdl(link, event.sender_id)
     except Exception as e:
         await ds.delete()
         return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})")
