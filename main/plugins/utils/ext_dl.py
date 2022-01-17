@@ -13,9 +13,7 @@ def mfdl(url):
 #download mega files
 def mega_dl(url):
     m = Mega().login()
-    path = f'./{dt.now().isoformat("_", "seconds")}/'
-    os.mkdir(path)
-    m.download_url(url, path) 
-    file = (os.listdir(path))[0]
-    return str(path + '/' + file)
+    s, o = m.download_url(url) 
+    return s, o
+
 
