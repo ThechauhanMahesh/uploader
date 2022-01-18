@@ -21,7 +21,7 @@ heroku3
 #uploading
 aria2p 
 mega.py 
-https://github.com/vasusen-code/gdown/archive/refs/tags/v2.tar.gz
+https://github.com/vasusen-code/gdown/archive/refs/tags/v0.5.tar.gz
 https://github.com/vasusen-code/mediafire-dl/archive/refs/tags/v2.tar.gz
 
 #helper
