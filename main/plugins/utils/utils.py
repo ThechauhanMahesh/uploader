@@ -37,18 +37,36 @@ async def bash(cmd):
     o = stdout.decode().strip()
     return o, e
 
-#Not in use
-async def screenshot(file):
-    out = dt.now().isoformat("_", "seconds") + '.jpg'
-    cmd = f'ffmpeg -i {file} -ss 00:00:00 -vframes 1 out -y'
-    o, e = await bash(cmd)
-    ss = None
-    if o is None:
-        ss = None
-    else:
-        ss = out
-    return ss
+def hhmmss(seconds):
+    x = time.strftime('%H:%M:%S',time.gmtime(seconds))
+    return x
 
+async def screenshot(video, duration):
+    time_stamp = hhmmss(int(duration)/2)
+    out = dt.now().isoformat("_", "seconds") + ".jpg"
+    cmd = ["ffmpeg",
+           "-ss",
+           f"{time_stamp}", 
+           "-i",
+           f"{video}",
+           "-frames:v",
+           "1", 
+           f"{out}",
+           "-y"
+          ]
+    process = await asyncio.create_subprocess_exec(
+        *cmd,
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE
+    )
+    stdout, stderr = await process.communicate()
+    stderr.decode().strip()
+    stdout.decode().strip()
+    if os.path.isfile(out):
+        return out
+    else:
+        None       
+        
 #2gb limit
 async def max_size_error(file, edit):
     try:
