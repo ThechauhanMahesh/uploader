@@ -10,6 +10,7 @@ RUN apt -qq install -y git \
     python3 \
     python3-pip \
     wget \
+    ffmpeg \
     curl
     
 COPY requirements.txt .
