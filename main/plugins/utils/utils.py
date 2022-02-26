@@ -103,12 +103,13 @@ async def video_thumb(id, file):
         return path
     else:
         extension = file_extension(file)
-        if extension in video_mimes:
-            ss = await screenshot(file)
+        if extension in [".mp4"]:
+            duration = video_metadata(file)["duration"]
+            ss = await screenshot(file, duration)
+            return ss
         else:
-            ss = None
-    return ss
-
+            return None
+    
 video_mimes = ['.mp4']
                
 #attrubutes needed to upload video as streaming
@@ -123,7 +124,7 @@ def attributes(file):
 #uploads video in streaming form
 async def upload_video(file, event, edit):
     await max_size_error(file, edit) 
-    T = await thumb(event.sender_id)
+    T = await video_thumb(event.sender_id, file)
     text = f'{file}\n\n**UPLOADED by:** {BOT_UN}'
     Drone = event.client
     try:
