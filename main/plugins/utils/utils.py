@@ -1,26 +1,23 @@
 #Tg:ChauhanMahesh/DroneBots
 #Github.com/Vasusen-code
 
-import re
-import os
-import time
-import heroku3
-import requests
-import subprocess
-import asyncio
+import re, os, time, requests, subprocess, asyncio
 from datetime import datetime as dt
+from decouple import config
+from telegraph import upload_file as uf
+
 from ... import Drone, BOT_UN, MONGODB_URI
 from main.Database.database import Database
-from telethon import events
-from decouple import config
-from ethon.telefunc import fast_upload
-from telethon.tl.types import DocumentAttributeVideo
-from ethon.pyutils import file_extension
-from ethon.pyfunc import video_metadata
 from LOCAL.localisation import SUPPORT_LINK
-from telegraph import upload_file as uf
+
+from telethon import events
+from telethon.tl.types import DocumentAttributeVideo
 from telethon.errors.rpcerrorlist import UserNotParticipantError
 from telethon.tl.functions.channels import GetParticipantRequest
+
+from ethon.telefunc import fast_upload
+from ethon.pyutils import file_extension
+from ethon.pyfunc import video_metadata
 
 db = Database(MONGODB_URI, 'uploaderpro')
 
@@ -106,7 +103,7 @@ def attributes(file):
 
 #uploads...
 
-async def upload():
+async def upload(file, event, edit):
     await edit.edit('preparing to upload...') 
     size = max_size_error(file)
     if size == False:
