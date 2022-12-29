@@ -41,7 +41,7 @@ def hhmmss(seconds):
     x = time.strftime('%H:%M:%S',time.gmtime(seconds))
     return x
 
-async def screenshot(video, duration):
+async def screenshot(video):
     time_stamp = hhmmss(int(duration)/2)
     out = dt.now().isoformat("_", "seconds") + ".jpg"
     cmd = ["ffmpeg",
@@ -68,17 +68,18 @@ async def screenshot(video, duration):
         None       
         
 #2gb limit
-async def max_size_error(file, edit):
-    try:
+
+def max_size_error(file):
+    if os.path.isfile(file) == True:
         size = os.path.getsize(file)/1000000
         if size > 1999:
-            await edit.edit("Files greater than 2Gb cannot be uploaded to telegram!")
             os.remove(file)
-            return
-    except Exception:
-        return await edit.edit("Internal Error, Your link may be unsupported.")
+            return False
+        else:
+            return True
 
 #to get the pmt thumbnail saved by the user
+
 async def thumb(id):
     db = Database(MONGODB_URI, 'uploaderpro')
     T = await db.get_thumb(id)
@@ -91,28 +92,10 @@ async def thumb(id):
     else:
         return None
 
-#Not in use
-async def video_thumb(id, file):
-    db = Database(MONGODB_URI, 'uploaderpro')
-    T = await db.get_thumb(id)
-    if T is not None:
-        ext = T.split("/")[4]
-        r = requests.get(T, allow_redirects=True)
-        path = dt.now().isoformat("_", "seconds") + ext
-        open(path , 'wb').write(r.content)
-        return path
-    else:
-        extension = file_extension(file)
-        if extension in [".mp4"]:
-            duration = video_metadata(file)["duration"]
-            ss = await screenshot(file, duration)
-            return ss
-        else:
-            return None
-    
-video_mimes = ['.mp4']
+video_mimes = ['mkv', 'mp4']
                
-#attrubutes needed to upload video as streaming
+# attrubutes needed to upload video as streaming
+
 def attributes(file):
     metadata = video_metadata(file)
     width = metadata["width"]
@@ -121,91 +104,37 @@ def attributes(file):
     x = [DocumentAttributeVideo(duration=duration, w=width, h=height, supports_streaming=True)]
     return x
 
-#uploads video in streaming form
-async def upload_video(file, event, edit):
-    await max_size_error(file, edit) 
-    T = await video_thumb(event.sender_id, file)
-    text = f'{file}\n\n**UPLOADED by:** {BOT_UN}'
-    Drone = event.client
-    try:
-        x = attributes(file)
-        uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE**')
-        await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, attributes=x, force_document=False)
-        os.remove(file)
-    except Exception:
-        False    
+#uploads...
 
-async def upload_file(file, event, edit):
-    await edit.edit('preparing to upload') 
+async def upload():
+    await edit.edit('preparing to upload...') 
+    size = max_size_error(file)
+    if size == False:
+        await edit.edit("Can't upload files larger than 2GB.")
+        return
     text = f'{file}\n\n**UPLOADED by:** {BOT_UN}'
     Drone = event.client
-    try:
-        extension = file_extension(file)
-        if extension in video_mimes:
-            result = await upload_video(file, event, edit) 
-            if result is False:
-                await max_size_error(file, edit) 
-                T = await thumb(event.sender_id)
-                uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
-                await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
-                os.remove(file)
-        else:
-            await max_size_error(file, edit) 
-            T = await thumb(event.sender_id)
-            uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
-            await Drone.send_file(event.chat_id, uploader, caption=text,thumb=T, force_document=True)
-            os.remove(file)
-    except Exception as e:
-        return await edit.edit(f"An error `[{e}]` occured while uploading.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False)
-    await edit.delete()
-        
-#uploads a folder 
-#Note:Here folder is a list of all contents in a folder
-async def upload_folder(folder, event, edit):
-    await edit.edit('preparing to upload') 
-    Drone = event.client
-    index = len(folder)
-    for i in range(int(index)):
+    T = await thumb(event.sender_id)
+    if str(file).split(".")[-1] in video_mimes:
+        x = attributes(file) 
+        if T is None:
+            T = await screenshot(file)
         try:
-            file = folder[int(i)]
-            await max_size_error(file, edit) 
-            text = f'{file}\n\n**UPLOADED by:** {BOT_UN}'
-            extension = file_extension(file)
-            if extension in video_mimes:
-                result = await upload_video(file, event, edit) 
-                if result is False:
-                    T = await thumb(event.sender_id)
-                    uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
-                    await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
-                    os.remove(file)
-            else:
-                T = await thumb(event.sender_id)
-                uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
-                await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
-                os.remove(file)
-        except Exception as e:
-            print(e)
-            return await edit.edit(f"An error `[{e}]` occured while uploading.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False)
-        await edit.delete()
-        folder.pop(i)
-
-#to upload as document
-async def upload_as_file(file, event, edit):
-    try:
-        Drone = event.client
-        await max_size_error(file, edit) 
-        text = f'{file}\n\n**UPLOADED by:** {BOT_UN}'
-        T = await thumb(event.sender_id)
-        uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE:**')
+            uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE**')
+            await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, attributes=x, force_document=False)
+        except Exception:
+            uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE**')
+            await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
+    else:
+        uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE**')
         await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
+    if os.path.isfile(file) == True:
         os.remove(file)
-    except Exception as e:
-        print(e)
-        return await edit.edit(f"Could not upload.\n\nContact [SUPPORT]({SUPPORT_LINK})", link_preview=False)
     await edit.delete()
-        
+    
 #regex-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #to get the url from event
+
 def get_link(string):
     regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
     url = re.findall(regex,string)   
@@ -258,47 +187,5 @@ async def rem_thumbnail(event):
     await db.rem_thumb_link(event.sender_id)
     await edit.edit('Removed!')
     
-#Heroku--------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------
    
-async def heroku_restart():
-    HEROKU_API = config("HEROKU_API", default=None)
-    HEROKU_APP_NAME = config("HEROKU_APP_NAME", default=None)
-    x = None
-    if not HEROKU_API and HEROKU_APP_NAME:
-        x = None
-    else:
-        try:
-            acc = heroku3.from_key(HEROKU_API)
-            bot = acc.apps()[HEROKU_APP_NAME]
-            bot.restart()
-            x = True
-        except Exception as e:
-            print(e)
-            x = False
-    return x
-    
-#Listing--------------------------------------------------------------------------------------------------------------
-
-#Not in use
-def one_trial_queue(id, List1):
-    if f'{id}' in List1:
-        return False
-    
-#Not in use
-def two_trial_queue(id, List1, List2):
-    if not f'{id}' in List1:
-        List1.append(f'{id}')
-    else:
-        if not f'{id}' in List2:
-            List2.append(f'{id}')
-        else:
-            return False
-
-#Not in use        
-def ps_queue(id, media, List1, List2):
-    List1.append(f'{id}')
-    List2.append(media)
-    if not len(List1) < 2:
-        return 'EMPTY'
-    if len(List1) > 2:
-        return 'FULL'
