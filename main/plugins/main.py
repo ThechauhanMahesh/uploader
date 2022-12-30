@@ -5,7 +5,6 @@ import os, time, asyncio
 from datetime import datetime
 
 from .. import Drone
-from main.plugins.gdown import 
 from main.plugins.direct_dl import mega_dl, mediafire, drive
 from main.plugins.utils.utils import get_link, force_sub, upload
 from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
