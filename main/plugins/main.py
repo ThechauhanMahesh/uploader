@@ -50,8 +50,6 @@ async def u(event):
     yy = await force_sub(event.sender_id)
     if yy is True:
         return await event.reply(forcesubtext)
-    if (str(event.text)).lower().startswith("magnet:"):
-        return await upload_button(event, 'magnet') 
     link = get_link(event.text)
     if not link:
         return 
@@ -209,42 +207,3 @@ async def u(event):
         await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await set_timer(event, process1, timer) 
         
-@Drone.on(events.callbackquery.CallbackQuery(data="magnet"))
-async def magnet(event):
-    s, t = await check_timer(event, process1, timer) 
-    if s == False:
-        return await event.answer(t, alert=True)
-    button = await event.get_message()
-    msg = await button.get_reply_message() 
-    await event.delete()
-    edit = await event.client.send_message(event.chat_id, "Trying to process.", reply_to=msg.id)
-    aria2 = aria_start()
-    status, o = add_magnet(aria2, msg.text)
-    if status == False:
-        return await edit.edit(o)
-    x, y = await check_progress_for_dl(aria2, o, event, edit, "")
-    await edit.edit("`Processing metadata...`")
-    await asyncio.sleep(5)
-    if x == True:
-        file = aria2.get_download(o)
-        if file.followed_by_ids:
-            new_gid = get_new_gid(aria2, o) 
-            a,  b = await check_progress_for_dl(aria2, new_gid, event, edit, "")
-            if a == True:
-                if type(b) == list:
-                    for x in b:
-                        await upload(x, event, edit)
-                else:
-                    await upload(b, event, edit)
-            else:
-                return await edit.edit(b)
-        else:
-            if type(y) == list:
-                for x in y:
-                    await upload(x, event, edit) 
-            else:
-                await upload(y, event, edit) 
-    else:
-        return await edit.edit(y)
-    await set_timer(event, process1, timer) 
-    
