@@ -56,9 +56,9 @@ async def sett(event):
     msg = await button.get_reply_message() 
     await event.delete()
     async with Drone.conversation(event.chat_id) as conv: 
-        xx = await conv.send_message("Send me any image for thumbnail as a `reply` to this message.")
+        xx = await conv.send_message("Send me any image for thumbnail.")
         try:
-            x = await conv.get_reply()
+            x = await conv.get_response()
             if not x.media:
                 return await xx.edit("No media found.")
             mime = x.file.mime_type
@@ -77,14 +77,4 @@ async def remt(event):
     await event.delete()
     await rem_thumbnail(event)
     
-@Drone.on(events.callbackquery.CallbackQuery(data="restart"))
-async def res(event):
-    if not f'{event.sender_id}' == f'{int(AUTH_USERS)}':
-        return await event.edit("Only authorized user can restart!")
-    result = await heroku_restart()
-    if result is None:
-        await event.edit("You have not filled `HEROKU_API` and `HEROKU_APP_NAME` vars.")
-    elif result is False:
-        await event.edit("An error occured!")
-    elif result is True:
-        await event.edit("Restarting app, wait for a minute.")
+
