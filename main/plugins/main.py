@@ -55,7 +55,9 @@ async def u(event):
     link = get_link(event.text)
     if not link:
         return 
-    if 'drive.google.com' in link: 
+    if 'drive.google.com' or 'drive' in link: 
+        if 'folder' in link:
+            return
         await upload_button(event, 'drive') 
     elif 'playlist' in link:
         return
@@ -80,7 +82,19 @@ async def d(event):
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
-    await drive(event, msg) 
+    file = None
+    try:
+        link = get_link(msg.text)
+        file = drive(link)
+    except Exception as e:
+        await ds.delete()
+        print(e)
+        return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
+    await ds.delete()
+    if not file == False:
+        await upload(file, event, edit)
+    else:
+        await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await set_timer(event, process1, timer) 
     
 @Drone.on(events.callbackquery.CallbackQuery(data="youtube"))
@@ -102,7 +116,10 @@ async def yt(event):
         print(e)
         return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await ds.delete()
-    await upload(file, event, edit) 
+    if not file == False:
+        await upload(file, event, edit)
+    else:
+        await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await set_timer(event, process1, timer) 
     
 @Drone.on(events.callbackquery.CallbackQuery(data="mega"))
@@ -124,7 +141,10 @@ async def m(event):
         await ds.delete()
         return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await ds.delete()
-    await upload(file, event, edit) 
+    if not file == False:
+        await upload(file, event, edit)
+    else:
+        await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await set_timer(event, process1, timer) 
     
 @Drone.on(events.callbackquery.CallbackQuery(data="mediafire"))
@@ -139,12 +159,15 @@ async def mf(event):
     file = None
     try:
         link = get_link(msg.text)
-        file = mfdl(link)
+        file = mediafire(link)
     except Exception as e:
         print(e)
         return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})", buttons=None)
     await edit.edit("Download complete.", buttons=None)
-    await upload(file, event, edit) 
+    if not file == False:
+        await upload(file, event, edit)
+    else:
+        await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await set_timer(event, process1, timer) 
  
 @Drone.on(events.callbackquery.CallbackQuery(data="upload"))
@@ -180,7 +203,10 @@ async def u(event):
         await ds.delete()
         return await edit.edit(f'An error `[{e}]` occured!\n\nContact [SUPPORT]({SUPPORT_LINK})', link_preview=False) 
     await ds.delete()
-    await upload(file, event, edit) 
+    if not file == False:
+        await upload(file, event, edit)
+    else:
+        await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await set_timer(event, process1, timer) 
         
 @Drone.on(events.callbackquery.CallbackQuery(data="magnet"))
