@@ -8,7 +8,6 @@ from .. import Drone
 from main.plugins.gdown import 
 from main.plugins.direct_dl import mega_dl, mediafire, drive
 from main.plugins.utils.utils import get_link, force_sub, upload
-from main.plugins.aria.aria2c import aria_start, add_magnet, check_progress_for_dl, get_new_gid
 from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
 
 from ethon.uploader import weburl, ytdl, download_from_youtube
