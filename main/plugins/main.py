@@ -1,24 +1,24 @@
 #tg:ChauhanMahesh/DroneBots
 #github.com/vasusen-code
 
-import os
-import time
-import asyncio
-from .. import Drone
+import os, time, asyncio
 from datetime import datetime
-from telethon import events, Button
-from main.plugins.gdown import drive
-from main.plugins.utils.ext_dl import mega_dl, mfdl
-from ethon.uploader import weburl, ytdl, download_from_youtube
-from main.plugins.utils.utils import get_link, upload_file, force_sub, upload_as_file
-from main.plugins.utils.ext_dl import get_progress
-from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
+
+from .. import Drone
+from main.plugins.gdown import 
+from main.plugins.direct_dl import mega_dl, mediafire, drive
+from main.plugins.utils.utils import get_link, force_sub, upload
 from main.plugins.aria.aria2c import aria_start, add_magnet, check_progress_for_dl, get_new_gid
+from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
+
+from ethon.uploader import weburl, ytdl, download_from_youtube
+
+from telethon import events, Button
 
 process1 = []
 timer = []
 
-#Handy Works-------------------------------------------------------------------------------------------------------------------------------------------
+#Handy candy-------------------------------------------------------------------------------------------------------------------------------------------
 
 async def upload_button(event, data):
     await event.client.send_message(event.chat_id, file=link_animated, reply_to=event.id, buttons=[[Button.inline("Upload.", data=data)]])
@@ -43,7 +43,7 @@ async def check_timer(event, list1, list2):
     else:
         return True, None
     
-#Callbacks-------------------------------------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------------------------------------
     
 @Drone.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def u(event):
@@ -59,19 +59,19 @@ async def u(event):
         await upload_button(event, 'drive') 
     elif 'playlist' in link:
         return
-    elif 'herokuapp' in link:
-        return await event.reply("Support of this site is removed to reduce load because of it's slow download speed.")
     elif 'youtube' in link:
-        await upload_button(event, 'yt') 
+        await upload_button(event, 'youtube') 
     elif 'youtu.be' in link:
-        await upload_button(event, 'yt') 
+        await upload_button(event, 'youtube') 
     elif 'mega' in link:
         await upload_button(event, 'mega') 
     elif 'mediafire' in link:
-        await upload_button(event, 'mf')
+        await upload_button(event, 'mediafire')
     else:
         await upload_button(event, 'upload')
         
+#Callbacks-------------------------------------------------------------------------------------------------------------------------------------------
+    
 @Drone.on(events.callbackquery.CallbackQuery(data="drive"))
 async def d(event):
     s, t = await check_timer(event, process1, timer) 
@@ -83,7 +83,7 @@ async def d(event):
     await drive(event, msg) 
     await set_timer(event, process1, timer) 
     
-@Drone.on(events.callbackquery.CallbackQuery(data="yt"))
+@Drone.on(events.callbackquery.CallbackQuery(data="youtube"))
 async def yt(event):
     s, t = await check_timer(event, process1, timer) 
     if s == False:
@@ -127,7 +127,7 @@ async def m(event):
     await upload(file, event, edit) 
     await set_timer(event, process1, timer) 
     
-@Drone.on(events.callbackquery.CallbackQuery(data="mf"))
+@Drone.on(events.callbackquery.CallbackQuery(data="mediafire"))
 async def mf(event):
     s, t = await check_timer(event, process1, timer) 
     if s == False:
