@@ -12,7 +12,6 @@ db = Database(MONGODB_URI, 'uploaderpro')
 
 @Drone.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def incomming(event):
-    await event.forward_to(int(ACCESS_CHANNEL))
     if not await db.is_user_exist(event.sender_id):
         await db.add_user(event.sender_id)
     
