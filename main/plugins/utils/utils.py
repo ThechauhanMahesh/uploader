@@ -67,7 +67,7 @@ async def screenshot(video):
 #2gb limit
 
 def max_size_error(file):
-    if not file == None 
+    if not file == None:
         if os.path.isfile(file) == True:
             size = os.path.getsize(file)/1000000
             if size > 1999:
