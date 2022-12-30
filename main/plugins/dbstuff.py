@@ -1,10 +1,9 @@
 #tg:chauhanMahesh/DroneBots
 #github.com/vasusen-code
 
-import heroku3 
 from .. import Drone, AUTH_USERS, ACCESS_CHANNEL, MONGODB_URI
 from telethon import events, Button
-from decouple import config
+from telethon.errors import FloodWaitError
 from main.Database.database import Database
 
 #Database command handling--------------------------------------------------------------------------
@@ -28,18 +27,12 @@ async def bban(event):
     c = event.pattern_match.group(1)
     if not c:
         await event.reply("Disallow who!?")
-    AUTH = config("AUTH_USERS", default=None)
-    admins = []
-    admins.append(f'{int(AUTH)}')
-    if c in admins:
-        return await event.reply("I cannot ban an AUTH_USER")
     xx = await db.is_banned(int(c))
     if xx is True:
         return await event.reply("User is already disallowed!")
     else:
         await db.banning(int(c))
         await event.reply(f"{c} is now disallowed.")
-    admins.remove(f'{int(AUTH)}')
     
 @Drone.on(events.NewMessage(incoming=True, from_users=AUTH_USERS , pattern="^/allow (.*)" ))
 async def unbban(event):
@@ -89,7 +82,7 @@ async def bcast(event):
                                  [Button.inline(f"FAILED: {len(failed)}", data="none")]])
                 await asyncio.sleep(1)
             except FloodWaitError as fw:
-                await asyncio.sleep(fw.seconds + 10)
+                await asyncio.sleep(fw.x + 5)
                 await event.client.send_message(int(id), msg)
                 sent.append(id)
                 await xx.edit(f"Total users : {x}", 
