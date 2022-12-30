@@ -28,8 +28,8 @@ async def set_timer(event, list1, list2):
     now = time.time()
     list2.append(f'{now}')
     list1.append(f'{event.sender_id}')
-    await event.client.send_message(event.chat_id, 'You can start a new process again after 2 minutes.')
-    await asyncio.sleep(120)
+    await event.client.send_message(event.chat_id, 'You can start a new process again after 10 minutes.')
+    await asyncio.sleep(600)
     list2.pop(int(timer.index(f'{now}')))
     list1.pop(int(process1.index(f'{event.sender_id}')))
     
@@ -39,7 +39,7 @@ async def check_timer(event, list1, list2):
         index = list1.index(f'{event.sender_id}')
         last = list2[int(index)]
         present = time.time()
-        return False, f"You have to wait {120-round(present-float(last))} seconds more to start a new process!"
+        return False, f"You have to wait {600-round(present-float(last))} seconds more to start a new process!"
     else:
         return True, None
     
@@ -99,9 +99,10 @@ async def yt(event):
         file = await download_from_youtube(link)
     except Exception as e:
         await ds.delete()
-        return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})")
+        print(e)
+        return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await ds.delete()
-    await upload_file(file, event, edit) 
+    await upload(file, event, edit) 
     await set_timer(event, process1, timer) 
     
 @Drone.on(events.callbackquery.CallbackQuery(data="mega"))
@@ -119,10 +120,11 @@ async def m(event):
         link = get_link(msg.text)
         file = mega_dl(link)
     except Exception as e:
+        print(e)
         await ds.delete()
-        return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})")
+        return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await ds.delete()
-    await upload_as_file(file, event, edit) 
+    await upload(file, event, edit) 
     await set_timer(event, process1, timer) 
     
 @Drone.on(events.callbackquery.CallbackQuery(data="mf"))
@@ -133,22 +135,18 @@ async def mf(event):
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
-    edit = await Drone.send_message(event.chat_id, '**DOWNLOADING**', reply_to=msg.id, buttons=[[Button.inline("STATUS.", data="mfstatus")]])
+    edit = await Drone.send_message(event.chat_id, '**DOWNLOADING**', reply_to=msg.id)
     file = None
     try:
         link = get_link(msg.text)
-        file = mfdl(link, event.sender_id)
+        file = mfdl(link)
     except Exception as e:
-        return await edit.edit(f"error: `{e}`\n\ncontact [SUPPORT]({SUPPORT_LINK})", buttons=None)
+        print(e)
+        return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})", buttons=None)
     await edit.edit("Download complete.", buttons=None)
-    await upload_as_file(file, event, edit) 
+    await upload(file, event, edit) 
     await set_timer(event, process1, timer) 
  
-@Drone.on(events.callbackquery.CallbackQuery(data="mfstatus"))
-async def mfstatus(event):
-    st = get_progress(f'M-Fire DOWN for {event.sender_id}')
-    await event.answer(st, alert=True)
-    
 @Drone.on(events.callbackquery.CallbackQuery(data="upload"))
 async def u(event):
     s, t = await check_timer(event, process1, timer) 
@@ -182,7 +180,7 @@ async def u(event):
         await ds.delete()
         return await edit.edit(f'An error `[{e}]` occured!\n\nContact [SUPPORT]({SUPPORT_LINK})', link_preview=False) 
     await ds.delete()
-    await upload_file(file, event, edit) 
+    await upload(file, event, edit) 
     await set_timer(event, process1, timer) 
         
 @Drone.on(events.callbackquery.CallbackQuery(data="magnet"))
@@ -209,17 +207,17 @@ async def magnet(event):
             if a == True:
                 if type(b) == list:
                     for x in b:
-                        await upload_file(x, event, edit)
+                        await upload(x, event, edit)
                 else:
-                    await upload_file(b, event, edit)
+                    await upload(b, event, edit)
             else:
                 return await edit.edit(b)
         else:
             if type(y) == list:
                 for x in y:
-                    await upload_file(x, event, edit) 
+                    await upload(x, event, edit) 
             else:
-                await upload_file(y, event, edit) 
+                await upload(y, event, edit) 
     else:
         return await edit.edit(y)
     await set_timer(event, process1, timer) 
