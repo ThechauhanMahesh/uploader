@@ -78,6 +78,8 @@ async def d(event):
     button = await event.get_message()
     msg = await button.get_reply_message()
     await event.delete()
+    ds = await Drone.send_message(event.chat_id, file=down_sticker, reply_to=msg.id)
+    edit = await Drone.send_message(event.chat_id, '**DOWNLOADING**', reply_to=msg.id)
     file = None
     try:
         link = get_link(msg.text)
