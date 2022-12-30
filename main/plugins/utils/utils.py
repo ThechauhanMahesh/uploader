@@ -6,7 +6,7 @@ from datetime import datetime as dt
 from decouple import config
 from telegraph import upload_file as uf
 
-from ... import Drone, BOT_UN, MONGODB_URI, FORCESUB
+from ... import Drone, BOT_UN, MONGODB_URI, FORCESUB_UN
 from main.Database.database import Database
 from LOCAL.localisation import SUPPORT_LINK
 
@@ -163,7 +163,7 @@ def get_link(string):
 async def force_sub(id):
     ok = False
     try:
-        x = await Drone(GetParticipantRequest(channel=int(FORCESUB), participant=int(id)))
+        x = await Drone(GetParticipantRequest(channel=FORCESUB_UN, participant=int(id)))
         left = x.stringify()
         if 'left' in left:
             ok = True
