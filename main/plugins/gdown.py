@@ -31,10 +31,8 @@ def mega_dl(url):
 def drive(link):
     try:
         if 'https://drive.google.com/file/' in link:
-            id = (link.split("/"))[5]
-            _link = f'https://drive.google.com/uc?id={id}'
             try:
-                file = gdown.download(_link, quiet=True)
+                file = gdown.download(link, quiet=True, fuzzy=True)
                 return file
             except Exception as e:
                 print(e)
@@ -45,10 +43,10 @@ def drive(link):
             except Exception as e:
                 print(e)
                 return  False
-        elif  'id=' in link:
+        elif 'id=' in link:
             try:
-                link_ = f'https://drive.google.com/uc?id={(link.split("id="))[1]}'
-                file = gdown.download(link_, quiet=True)
+                new_link = f'https://drive.google.com/uc?id={(link.split("id="))[1]}'
+                file = gdown.download(new_link, quiet=True)
                 return file
             except Exception as e:
                 print(e)
