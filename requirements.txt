@@ -8,7 +8,8 @@ cryptg
 
 #database
 motor
-pymongo >=3.12,<4
+pymongo
+pymongo[srv]
 dnspython
 
 #thumbnail
