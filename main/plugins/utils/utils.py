@@ -67,13 +67,16 @@ async def screenshot(video):
 #2gb limit
 
 def max_size_error(file):
-    if os.path.isfile(file) == True:
-        size = os.path.getsize(file)/1000000
-        if size > 1999:
-            os.remove(file)
-            return False
+    if not file == None 
+        if os.path.isfile(file) == True:
+            size = os.path.getsize(file)/1000000
+            if size > 1999:
+                os.remove(file)
+                return False
         else:
             return True
+    else:
+        return False
 
 #to get the pmt thumbnail saved by the user
 
