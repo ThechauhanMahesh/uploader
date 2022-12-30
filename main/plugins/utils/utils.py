@@ -197,5 +197,3 @@ async def rem_thumbnail(event):
     await db.rem_thumb_link(event.sender_id)
     await edit.edit('Removed!')
     
---------------------------------------------------------------------------------------------------------------
-   
