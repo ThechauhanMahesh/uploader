@@ -1,21 +1,32 @@
 #TG:ChauhanMahesh/DroneBots
 #Github.com/vasusen-code
 
-import re, os, time, asyncio
-
-from .. import Drone, BOT_UN
-from LOCAL.localisation import SUPPORT_LINK
-from pathlib import Path
-from datetime import datetime as dt
-
-from ethon.pyfunc import bash
-
-from telethon import events, Button
-
-from mega import Mega
+import re
 import gdown
+from mega import Mega
+from requests import get
+from bs4 import BeautifulSoup
 
 #Downloaders-------------------------------------------------------------------------------------------------------------
+
+#download from mediafire
+def mediafire(url):
+    try:
+        link = re.findall(r'\bhttps?://.*mediafire\.com\S+', url)[0]
+    except IndexError:
+        return False
+    page = BeautifulSoup(get(link).content, 'lxml')
+    info = page.find('a', {'aria-label': 'Download file'})
+    real_link = info.get('href')
+    try:
+        file = weburl(real_link)
+        if file is not None:
+            return file
+        else:
+            return None
+    except Exception as e:
+        print(e)
+        return False
 
 #download mega files
 def mega_dl(url):
