@@ -111,20 +111,34 @@ async def upload(file, event, edit):
         return
     text = f'{file}\n\n**UPLOADED by:** {BOT_UN}'
     Drone = event.client
-    T = await thumb(event.sender_id)
+    try:
+        T = await thumb(event.sender_id)
+    except Exception:
+        T = None
     if str(file).split(".")[-1] in video_mimes:
         x = attributes(file) 
         if T is None:
-            T = await screenshot(file)
+            try:
+                T = await screenshot(file)
+            except Exception:
+                T = None
         try:
             uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE**')
             await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, attributes=x, force_document=False)
         except Exception:
+            try:
+                uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE**')
+                await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
+            except Exception as e:
+                print(e):
+                return await edit.edit("Failed to UPLOAD!")
+    else:
+        try:
             uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE**')
             await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
-    else:
-        uploader = await fast_upload(file, file, time.time(), event.client, edit, f'**UPLOADING FILE**')
-        await Drone.send_file(event.chat_id, uploader, caption=text, thumb=T, force_document=True)
+        except Exception as e:
+            print(e):
+            return await edit.edit("Failed to UPLOAD!")
     if os.path.isfile(file) == True:
         os.remove(file)
     await edit.delete()
