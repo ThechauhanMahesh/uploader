@@ -185,18 +185,21 @@ async def u(event):
             if x is None:
                 try:
                     file = await ytdl(link)
-                except Exception:
+                except Exception as e:
+                    print(e)
                     await ds.delete()
                     return await edit.edit('Link Not supported.')
             else:
                 file = x
-        except Exception:
+        except Exception as e:
+            print(e)
             try:
                 file = await ytdl(link)
             except Exception:
                 await ds.delete()
                 return await edit.edit('Link Not supported.')
     except Exception as e:
+        print(e)
         await ds.delete()
         return await edit.edit(f'An error `[{e}]` occured!\n\nContact [SUPPORT]({SUPPORT_LINK})', link_preview=False) 
     await ds.delete()
