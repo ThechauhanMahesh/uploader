@@ -2,6 +2,7 @@ import re
 from telethon import errors, events
 from telegraph import upload_file as uf
 from LOCAL.localisation import SUPPORT_LINK
+from main.Database.database import Database
 
 from .. import MONGODB_URI
 db = Database(MONGODB_URI, 'uploaderpro')
