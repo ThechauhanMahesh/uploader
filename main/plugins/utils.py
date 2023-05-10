@@ -1,6 +1,33 @@
 import re
 from telethon import errors, events
+from telegraph import upload_file as uf
+from LOCAL.localisation import SUPPORT_LINK
 
+from .. import MONGODB_URI
+db = Database(MONGODB_URI, 'uploaderpro')
+
+#Thumbnail--------------------------------------------------------------------------------------------------------------
+
+async def set_thumbnail(event, img):
+    edit = await event.client.send_message(event.chat_id, 'Trying to process.')
+    try:
+        path = await event.client.download_media(img)
+        meta = uf(path)
+        link = f'https://telegra.ph{meta[0]}'
+    except Exception as e:
+        print(e)
+        return await edit.edit("Failed to Upload on Tgraph.")
+    await db.update_thumb_link(event.sender_id, link)
+    await edit.edit("Done!")
+    
+async def rem_thumbnail(event):
+    edit = await event.client.send_message(event.chat_id, 'Trying.')
+    T = await db.get_thumb(event.sender_id)
+    if T is None:
+        return await edit.edit('No thumbnail saved!')
+    await db.rem_thumb_link(event.sender_id)
+    await edit.edit('Removed!')
+    
 #regex-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #to get the url from event
 
