@@ -26,7 +26,7 @@ async def set_timer(event, list1, list2):
     list2.append(f'{now}')
     list1.append(f'{event.sender_id}')
     await event.client.send_message(event.chat_id, 'You can start a new process again after 10 minutes.')
-    await asyncio.sleep(600)
+    await asyncio.sleep(10)
     list2.pop(int(timer.index(f'{now}')))
     list1.pop(int(process1.index(f'{event.sender_id}')))
     
@@ -36,7 +36,7 @@ async def check_timer(event, list1, list2):
         index = list1.index(f'{event.sender_id}')
         last = list2[int(index)]
         present = time.time()
-        return False, f"You have to wait {600-round(present-float(last))} seconds more to start a new process!"
+        return False, f"You have to wait {10-round(present-float(last))} seconds more to start a new process!"
     else:
         return True, None
     
