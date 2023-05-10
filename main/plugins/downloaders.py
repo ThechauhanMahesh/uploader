@@ -27,7 +27,7 @@ def mediafire(url):
             return None
     except Exception as e:
         print(e)
-        return False
+        return None
 
 #download mega files------------------------------------------------------------------------------------
 def mega_dl(url):
@@ -37,7 +37,7 @@ def mega_dl(url):
         return str(Path(str(file)))
     except Exception as e:
         print(e)
-        return False
+        return None
 
 #download files from drive---------------------------------------------------------------------------------------
 def drive(link):
