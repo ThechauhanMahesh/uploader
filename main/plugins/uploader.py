@@ -67,7 +67,7 @@ def hhmmss(seconds):
 
 async def screenshot(video):
     metadata = video_metadata(file)
-    duration = metadata["duration"]' 
+    duration = metadata["duration"]
     if duration == None:
         duration = 0
     time_stamp = hhmmss(int(duration)/2)
