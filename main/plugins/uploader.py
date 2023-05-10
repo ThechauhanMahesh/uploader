@@ -5,7 +5,7 @@ import os, time, subprocess, asyncio, requests
 from datetime import datetime as dt
 from telegraph import upload_file as uf
 
-from ... import Drone, BOT_UN, MONGODB_URI
+from .. import Drone, BOT_UN, MONGODB_URI
 from main.Database.database import Database
 from LOCAL.localisation import SUPPORT_LINK
 
