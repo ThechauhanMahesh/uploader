@@ -24,4 +24,4 @@ beautifulsoup4
 requests
 
 #helper
-ethon==1.2.7 
+ethon
