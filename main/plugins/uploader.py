@@ -52,6 +52,19 @@ def attributes(file):
         return [DocumentAttributeVideo(duration=0, w=1280, h=720, supports_streaming=True)]
 
 # generate a screenshot of video
+
+async def bash(cmd):
+    cmd_ = cmd.split()
+    process = await asyncio.create_subprocess_exec(*cmd_, stdout=asyncio.subprocess.PIPE, stderr=asyncio.subprocess.PIPE)
+    stdout, stderr = await process.communicate() 
+    e = stderr.decode().strip()
+    o = stdout.decode().strip()
+    return o, e
+
+def hhmmss(seconds):
+    x = time.strftime('%H:%M:%S',time.gmtime(seconds))
+    return x
+
 async def screenshot(video):
     metadata = video_metadata(file)
     duration = metadata["duration"]' 
@@ -82,7 +95,7 @@ async def screenshot(video):
     else:
         return None       
         
-# Upload a video to telegram
+# Upload a file to telegram
 async def upload(file, event, edit):
     await edit.edit('preparing to upload...') 
     size = max_size_error(file)
