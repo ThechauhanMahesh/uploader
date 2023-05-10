@@ -2,7 +2,7 @@ from .. import Drone, ACCESS_CHANNEL, AUTH_USERS
 from telethon import events, Button
 from LOCAL.localisation import START_TEXT as st
 from LOCAL.localisation import DEV, info_text, spam_notice, SUPPORT_LINK
-from main.plugins.utils.utils import set_thumbnail, rem_thumbnail
+from main.plugins.utils import set_thumbnail, rem_thumbnail
 
 @Drone.on(events.NewMessage(incoming=True, pattern="/start"))
 async def start(event):
