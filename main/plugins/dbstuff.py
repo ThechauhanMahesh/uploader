@@ -1,3 +1,4 @@
+"""
 #tg:chauhanMahesh/DroneBots
 #github.com/vasusen-code
 
@@ -99,7 +100,7 @@ async def bcast(event):
                  buttons=[
                      [Button.inline(f"SENT: {len(sent)}", data="none")],
                      [Button.inline(f"FAILED: {len(failed)}", data="none")]])
-    
+    """
 
 
     
