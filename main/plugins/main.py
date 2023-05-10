@@ -5,11 +5,10 @@ import os, time, asyncio
 from datetime import datetime
 
 from .. import Drone
-from main.plugins.direct_dl import mega_dl, mediafire, drive
-from main.plugins.utils.utils import get_link, force_sub, upload
+from main.plugins.downloaders import mega_dl, mediafire, drive, download_from_youtube, ytdl, weburl
+from main.plugins.uploader import upload
+from main.plugins.utils import get_link, force_sub
 from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
-
-from ethon.uploader import weburl, ytdl, download_from_youtube
 
 from telethon import events, Button
 
@@ -89,7 +88,7 @@ async def d(event):
         print(e)
         return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await ds.delete()
-    if not file == False:
+    if not file == None:
         await upload(file, event, edit)
     else:
         await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
@@ -114,7 +113,7 @@ async def yt(event):
         print(e)
         return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await ds.delete()
-    if not file == False:
+    if not file == None:
         await upload(file, event, edit)
     else:
         await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
@@ -139,7 +138,7 @@ async def m(event):
         await ds.delete()
         return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await ds.delete()
-    if not file == False:
+    if not file == None:
         await upload(file, event, edit)
     else:
         await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
@@ -162,7 +161,7 @@ async def mf(event):
         print(e)
         return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})", buttons=None)
     await edit.edit("Download complete.", buttons=None)
-    if not file == False:
+    if not file == None:
         await upload(file, event, edit)
     else:
         await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
@@ -201,7 +200,7 @@ async def u(event):
         await ds.delete()
         return await edit.edit(f'An error `[{e}]` occured!\n\nContact [SUPPORT]({SUPPORT_LINK})', link_preview=False) 
     await ds.delete()
-    if not file == False:
+    if not file == None:
         await upload(file, event, edit)
     else:
         await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
