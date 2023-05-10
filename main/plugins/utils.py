@@ -4,7 +4,7 @@ from telegraph import upload_file as uf
 from LOCAL.localisation import SUPPORT_LINK
 from main.Database.database import Database
 
-from .. import MONGODB_URI
+from .. import MONGODB_URI, Drone
 db = Database(MONGODB_URI, 'uploaderpro')
 
 #Thumbnail--------------------------------------------------------------------------------------------------------------
@@ -51,7 +51,7 @@ from telethon.tl.functions.channels import GetParticipantRequest
 
 async def force_sub(id):
     try:
-        x = await bot(GetParticipantRequest(channel=FSUB, participant=int(id)))
+        x = await Drone(GetParticipantRequest(channel=FSUB, participant=int(id)))
         left = x.stringify()
         if 'left' in left:
             ok = True
