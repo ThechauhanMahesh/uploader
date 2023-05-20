@@ -125,6 +125,7 @@ async def yt(event):
     if link == False:
         return await edit.edit("No link found!")
     file = await download_from_youtube(link)
+    print(file)
     await ds.delete()
     if not file == None:
         await upload(file, event, edit)
