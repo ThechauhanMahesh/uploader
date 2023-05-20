@@ -83,8 +83,11 @@ async def d(event):
     file = None
     try:
         link = get_link(msg.text)
+        if link == False:
+            return await edit.edit("No link found!")
         file = drive(link)
     except Exception as e:
+        print(e)
         await ds.delete()
         print(e)
         return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
@@ -108,6 +111,9 @@ async def yt(event):
     file = None
     try:
         link = get_link(msg.text)
+        print(link)
+        if link == False:
+            return await edit.edit("No link found!")
         file = await download_from_youtube(link)
     except Exception as e:
         await ds.delete()
@@ -133,6 +139,8 @@ async def m(event):
     file = None
     try:
         link = get_link(msg.text)
+        if link == False:
+            return await edit.edit("No link found!")
         file = mega_dl(link)
     except Exception as e:
         print(e)
@@ -157,6 +165,8 @@ async def mf(event):
     file = None
     try:
         link = get_link(msg.text)
+        if link == False:
+            return await edit.edit("No link found!")
         file = mediafire(link)
     except Exception as e:
         print(e)
@@ -181,6 +191,8 @@ async def u(event):
     file = None
     try:
         link = get_link(msg.text)
+        if link == False:
+            return await edit.edit("No link found!")
         try:
             x = weburl(link)
             if x is None:
