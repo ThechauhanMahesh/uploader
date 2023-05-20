@@ -109,16 +109,22 @@ async def yt(event):
     ds = await Drone.send_message(event.chat_id, file=down_sticker, reply_to=msg.id)
     edit = await Drone.send_message(event.chat_id, '**DOWNLOADING**', reply_to=msg.id)
     file = None
-    try:
-        link = get_link(msg.text)
-        print(link)
-        if link == False:
-            return await edit.edit("No link found!")
-        file = await download_from_youtube(link)
-    except Exception as e:
-        await ds.delete()
-        print(e)
-        return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
+#     try:
+#         link = get_link(msg.text)
+#         print(link)
+#         if link == False:
+#             return await edit.edit("No link found!")
+#         file = await download_from_youtube(link)
+#     except Exception as e:
+#         await ds.delete()
+#         print(e)
+#         return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
+
+    link = get_link(msg.text)
+    print(link)
+    if link == False:
+        return await edit.edit("No link found!")
+    file = await download_from_youtube(link)
     await ds.delete()
     if not file == None:
         await upload(file, event, edit)
