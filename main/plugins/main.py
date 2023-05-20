@@ -6,7 +6,7 @@ from datetime import datetime
 
 from .. import Drone
 from main.plugins.downloaders import mega_dl, mediafire, drive
-from ethon.uploader import download_from_youtube, ytdl, weburl
+from main.plugins.downloaders import download_from_youtube, ytdl, weburl
 from main.plugins.uploader import upload
 from main.plugins.utils import get_link, force_sub
 from LOCAL.localisation import link_animated, down_sticker, SUPPORT_LINK, forcesubtext
