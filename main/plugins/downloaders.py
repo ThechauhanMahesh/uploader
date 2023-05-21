@@ -19,43 +19,29 @@ def mediafire(url):
     page = BeautifulSoup(get(link).content, 'lxml')
     info = page.find('a', {'aria-label': 'Download file'})
     real_link = info.get('href')
-    try:
-        file = weburl(real_link)
-        if file is not None:
-            return file
-        else:
-            return None
-    except Exception as e:
-        print(e)
-        return None
-
+    weburl(real_link)
+ 
 #download mega files------------------------------------------------------------------------------------
 def mega_dl(url):
-    try:
-        m = Mega().login()
-        file = m.download_url(url) 
-        return str(Path(str(file)))
-    except Exception as e:
-        print(e)
-        return None
+    m = Mega().login()
+    file = m.download_url(url) 
+    return str(Path(str(file)))
 
 #download files from drive---------------------------------------------------------------------------------------
 def drive(link):
-    try:
-        if 'https://drive.google.com/file/' in link:
-            file = gdown.download(link, quiet=True, fuzzy=True)
-            return file
-        elif 'https://drive.google.com/uc?id=' in link:
-            file = gdown.download(link, quiet=True)
-            return file
-        elif 'id=' in link:
-            new_link = f'https://drive.google.com/uc?id={(link.split("id="))[1]}'
-            file = gdown.download(new_link, quiet=True)
-            return file
-    except Exception as e:
-        print(e)
+    if 'https://drive.google.com/file/' in link:
+        file = gdown.download(link, quiet=True, fuzzy=True)
+        return file
+    elif 'https://drive.google.com/uc?id=' in link:
+        file = gdown.download(link, quiet=True)
+        return file
+    elif 'id=' in link:
+        new_link = f'https://drive.google.com/uc?id={(link.split("id="))[1]}'
+        file = gdown.download(new_link, quiet=True)
+        return file
+    else:
         return None
-
+        
 #Download videos from youtube-------------------------------------------------------------------------------------------
 async def download_from_youtube(url):
     await bash(f'yt-dlp -f best --no-warnings --prefer-ffmpeg {url}')
