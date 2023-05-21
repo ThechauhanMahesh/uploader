@@ -1,7 +1,4 @@
-#tg:ChauhanMahesh/DroneBots
-#github.com/vasusen-code
-
-import os, time, asyncio
+import os, time, asyncio, traceback
 from datetime import datetime
 
 from .. import Drone
@@ -43,6 +40,38 @@ async def check_timer(event, list1, list2):
     
 # -------------------------------------------------------------------------------------------------------------------------------------------
     
+def download(link):
+    link_ = link.lower()
+    if 'drive.google.com' or 'drive' in link_: 
+        if 'folder' in link_:
+            return
+        else:
+            return drive(link)
+    elif 'playlist' in link_:
+        return
+    elif 'youtube' in link_ or 'youtu.be' in link_:
+        return download_from_youtube(link)
+    elif 'mega' in link_:
+        return mega_dl(link)
+    elif 'mediafire' in link_:
+        return mediafire(link)
+    else:
+        'unkown'
+
+async def unkown_download(link):
+    file = None
+    try:
+        x = weburl(link)
+        if x is None:
+            return await ytdl(link)
+        else:
+            return x
+    except:
+        traceback.print_exc()
+        return await ytdl(link)
+              
+#Callbacks-------------------------------------------------------------------------------------------------------------------------------------------
+    
 @Drone.on(events.NewMessage(incoming=True, func=lambda e: e.is_private))
 async def u(event):
     yy = await force_sub(event.sender_id)
@@ -51,27 +80,10 @@ async def u(event):
     link = get_link(event.text)
     if not link:
         return 
-    if 'drive.google.com' or 'drive' in link: 
-        if 'folder' in link:
-            return
-        await upload_button(event, 'drive') 
-    elif 'playlist' in link:
-        return
-    elif 'youtube' in link:
-        await upload_button(event, 'youtube') 
-    elif 'youtu.be' in link:
-        await upload_button(event, 'youtube') 
-    elif 'mega' in link:
-        await upload_button(event, 'mega') 
-    elif 'mediafire' in link:
-        await upload_button(event, 'mediafire')
-    else:
-        await upload_button(event, 'upload')
-        
-#Callbacks-------------------------------------------------------------------------------------------------------------------------------------------
-    
-@Drone.on(events.callbackquery.CallbackQuery(data="drive"))
-async def d(event):
+    await upload_button(event, "run")
+
+@Drone.on(events.callbackquery.CallbackQuery(data="run"))
+async def down_load(event):
     s, t = await check_timer(event, process1, timer) 
     if s == False:
         return await event.answer(t, alert=True)
@@ -81,21 +93,23 @@ async def d(event):
     ds = await Drone.send_message(event.chat_id, file=down_sticker, reply_to=msg.id)
     edit = await Drone.send_message(event.chat_id, '**DOWNLOADING**', reply_to=msg.id)
     file = None
+    link = msg.text
     try:
-        link = get_link(msg.text)
-        if link == False:
-            return await edit.edit("No link found!")
-        file = drive(link)
-    except Exception as e:
-        print(e)
+        file = download(link)
+        if file == "unkown":
+            file = await unkown_download(link)
+    except:
+        traceback.print_exc()
         await ds.delete()
-        print(e)
         return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     await ds.delete()
-    if not file == None:
-        await upload(file, event, edit)
+    if file == None:
+        return await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
     else:
-        await edit.edit(f"**Couldn't download file from link!**\n\ncontact [SUPPORT]({SUPPORT_LINK})")
+        try:
+            await upload(file, event, edit)
+        except:
+            traceback.print_exc()
     await set_timer(event, process1, timer) 
     
 @Drone.on(events.callbackquery.CallbackQuery(data="youtube"))
@@ -188,33 +202,6 @@ async def u(event):
     await event.delete()
     ds = await Drone.send_message(event.chat_id, file=down_sticker, reply_to=msg.id)
     edit = await Drone.send_message(event.chat_id, '**DOWNLOADING**', reply_to=msg.id)
-    file = None
-    try:
-        link = get_link(msg.text)
-        if link == False:
-            return await edit.edit("No link found!")
-        try:
-            x = weburl(link)
-            if x is None:
-                try:
-                    file = await ytdl(link)
-                except Exception as e:
-                    print(e)
-                    await ds.delete()
-                    return await edit.edit('Link Not supported.')
-            else:
-                file = x
-        except Exception as e:
-            print(e)
-            try:
-                file = await ytdl(link)
-            except Exception:
-                await ds.delete()
-                return await edit.edit('Link Not supported.')
-    except Exception as e:
-        print(e)
-        await ds.delete()
-        return await edit.edit(f'An error `[{e}]` occured!\n\nContact [SUPPORT]({SUPPORT_LINK})', link_preview=False) 
     await ds.delete()
     if not file == None:
         await upload(file, event, edit)
